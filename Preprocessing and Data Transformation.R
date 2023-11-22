@@ -47,3 +47,10 @@ if (missing_values) {
   cat("There are no missing values in the dataset.\n")
 }
 
+#install mice package for multiple imputation
+install.packages("mice")
+library(mice)
+
+# Impute missing values in numeric columns using mean imputation
+numeric_cols <- sapply(Weather, is.numeric)
+imputed_data_numeric <- complete(mice(Weather[, numeric_cols]))

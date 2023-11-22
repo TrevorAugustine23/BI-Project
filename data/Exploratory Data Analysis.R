@@ -215,4 +215,9 @@ ggplot(WeatherData, aes(x = WindGustDir, fill = RainToday)) +
   labs(title = "Bar Plot of WindGustDir Counts by RainToday", x = "WindGustDir", y = "Count") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+## Cross-tabulation
+# Create a cross-tabulation for RainToday and RainTomorrow
+cross_tab <- table(WeatherData$RainToday, WeatherData$RainTomorrow)
 
+# Display the cross-tabulation
+print(cross_tab)

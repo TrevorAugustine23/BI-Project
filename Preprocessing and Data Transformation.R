@@ -78,4 +78,6 @@ if (missing_values_after_imputation) {
 # Standardize the Numeric variables that could be used for prediction
 numeric_vars <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
 
-
+# Standardize the numeric variables
+Weather_standardized <- Weather
+Weather_standardized[numeric_vars] <- scale(Weather[numeric_vars])

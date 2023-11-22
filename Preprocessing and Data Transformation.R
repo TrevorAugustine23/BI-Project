@@ -64,3 +64,10 @@ imputed_data <- cbind(imputed_data_numeric, imputed_data_categorical)
 
 # Check if there are still missing values in the imputed dataset
 missing_values_after_imputation <- any(is.na(imputed_data))
+
+# Display the result
+if (missing_values_after_imputation) {
+  cat("There are still missing values after imputation.\n")
+} else {
+  cat("All missing values have been successfully imputed.\n")
+}

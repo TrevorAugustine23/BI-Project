@@ -146,3 +146,10 @@ for (i in 1:(length(numeric_columns) - 1)) {
     cat("Covariance:", covariance_val, "\n\n")
   }
 }
+
+# ANOVA for a categorical variable (WindGustDir) and a numeric variable (MaxTemp)
+anova_result1 <- aov(MaxTemp ~ WindGustDir, data = WeatherData)
+
+# Display the ANOVA result for the first analysis
+cat("# ANOVA Result for MaxTemp and WindGustDir:\n")
+print(anova_result1)

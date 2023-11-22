@@ -221,3 +221,10 @@ cross_tab <- table(WeatherData$RainToday, WeatherData$RainTomorrow)
 
 # Display the cross-tabulation
 print(cross_tab)
+
+# Bar plot for WindGustDir
+ggplot(WeatherData, aes(x = WindGustDir, fill = WindGustDir)) +
+  geom_bar() +
+  labs(title = "Bar Plot of WindGustDir Counts", x = "WindGustDir", y = "Count") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for better visibility
+

@@ -84,4 +84,6 @@ Weather_standardized[numeric_vars] <- scale(WeatherData[numeric_vars])
 
 # Load required packages
 library(ggplot2)
+# Install the dplyr package
+install.packages("dplyr")
 library(dplyr)

@@ -61,6 +61,12 @@ numeric_columns <- c(
   "RISK_MM"
 )
 
+# Mode function definition
+Mode <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+
 # Loop through each numeric column and calculate measures of central tendency
 for (col in numeric_columns) {
   cat(paste("# Measures of central tendency for", col, ":\n"))
@@ -74,6 +80,8 @@ for (col in numeric_columns) {
   cat("Median:", median_val, "\n")
   
   # Mode (using the Mode function defined below)
-  mode_val <- mode(WeatherData[[col]])
+  mode_val <- Mode(WeatherData[[col]])
   cat("Mode:", mode_val, "\n\n")
 }
+
+

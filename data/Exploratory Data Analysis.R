@@ -84,4 +84,36 @@ for (col in numeric_columns) {
   cat("Mode:", mode_val, "\n\n")
 }
 
+summary(WeatherData)
 
+# List of numeric columns in your dataset
+numeric_columns <- c(
+  "MinTemp", "MaxTemp", "Rainfall", "Evaporation", "Sunshine",
+  "WindGustSpeed", "WindSpeed9am", "WindSpeed3pm",
+  "Humidity9am", "Humidity3pm",
+  "Pressure9am", "Pressure3pm",
+  "Cloud9am", "Cloud3pm",
+  "Temp9am", "Temp3pm",
+  "RISK_MM"
+)
+
+# Loop through each numeric column and calculate measures of distribution
+for (col in numeric_columns) {
+  cat(paste("# Measures of Distribution for", col, ":\n"))
+  
+  # Range
+  range_val <- range(WeatherData[[col]])
+  cat("Range:", range_val, "\n")
+  
+  # Variance
+  var_val <- var(WeatherData[[col]])
+  cat("Variance:", var_val, "\n")
+  
+  # Standard Deviation
+  sd_val <- sd(WeatherData[[col]])
+  cat("Standard Deviation:", sd_val, "\n")
+  
+  # Interquartile Range (IQR)
+  iqr_val <- IQR(WeatherData[[col]])
+  cat("Interquartile Range (IQR):", iqr_val, "\n\n")
+}

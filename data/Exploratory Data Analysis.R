@@ -193,6 +193,13 @@ ggplot(WeatherData, aes(x = RainToday)) +
 
 #MultiVariate Plots
 # Scatter plot for two numeric variables (MaxTemp vs. Rainfall)
-ggplot(Weather, aes(x = Rainfall, y = MaxTemp)) +
+ggplot(WeatherData, aes(x = Rainfall, y = MaxTemp)) +
   geom_point(color = "blue", alpha = 0.7) +
   labs(title = "Scatter Plot of MaxTemp vs. Rainfall", x = "Rainfall", y = "MaxTemp")
+
+
+# Box plot to compare a numeric variable across different levels of a categorical variable (WindGustDir vs. MaxTemp)
+ggplot(WeatherData, aes(x = WindGustDir, y = MaxTemp, fill = WindGustDir)) +
+  geom_boxplot() +
+  labs(title = "Box Plot of MaxTemp Across WindGustDir", x = "WindGustDir", y = "MaxTemp") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 

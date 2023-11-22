@@ -1,3 +1,5 @@
+
+# Load dataset
 WeatherData <- read.csv("data/Weather.csv", colClasses = c(
   MinTemp = "numeric",
   MaxTemp = "numeric",

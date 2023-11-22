@@ -38,7 +38,7 @@ WeatherData$RainTomorrow <- factor(WeatherData$RainTomorrow, levels = rain_level
 
 View(WeatherData)
 
-# List of categorical columns in your dataset
+# List of categorical columns in the dataset
 categorical_columns <- c("WindGustDir", "WindDir9am", "WindDir3pm", "RainToday", "RainTomorrow")
 
 # Loop through each categorical column and generate frequency and percentage tables
@@ -51,7 +51,7 @@ for (col in categorical_columns) {
   cat("\n")
 }
 
-# List of numeric columns in your dataset
+# List of numeric columns in the dataset
 numeric_columns <- c(
   "MinTemp", "MaxTemp", "Rainfall", "Evaporation", "Sunshine",
   "WindGustSpeed", "WindSpeed9am", "WindSpeed3pm",
@@ -87,7 +87,7 @@ for (col in numeric_columns) {
 
 summary(WeatherData)
 
-# List of numeric columns in your dataset
+# List of numeric columns in the dataset
 numeric_columns <- c(
   "MinTemp", "MaxTemp", "Rainfall", "Evaporation", "Sunshine",
   "WindGustSpeed", "WindSpeed9am", "WindSpeed3pm",
@@ -119,7 +119,7 @@ for (col in numeric_columns) {
   cat("Interquartile Range (IQR):", iqr_val, "\n\n")
 }
 
-# List of numeric columns in your dataset
+# List of numeric columns in the dataset
 numeric_columns <- c(
   "MinTemp", "MaxTemp", "Rainfall", "Evaporation", "Sunshine",
   "WindGustSpeed", "WindSpeed9am", "WindSpeed3pm",

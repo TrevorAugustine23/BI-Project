@@ -71,3 +71,19 @@ if (missing_values_after_imputation) {
 } else {
   cat("All missing values have been successfully imputed.\n")
 }
+
+#replace WeatheData dataset with imputed dataset
+# Weather <- imputed_data
+
+# Standardize the numeric variable Maximum Temperature
+WeatherData$standardized_MaxTemp <- scale(WeatherData$MaxTemp)
+
+# plot for the original and standardized variables
+library(ggplot2)
+ggplot(WeatherData, aes(x = MaxTemp)) +
+  geom_histogram(binwidth = 1, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogram of Original MaxTemp", x = "Original MaxTemp", y = "Frequency")
+
+ggplot(WeatherData, aes(x = standardized_MaxTemp)) +
+  geom_histogram(binwidth = 0.2, fill = "orange", color = "black", alpha = 0.7) +
+  labs(title = "Histogram of Standardized MaxTemp", x = "Standardized MaxTemp", y = "Frequency")

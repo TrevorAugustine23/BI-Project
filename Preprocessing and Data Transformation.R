@@ -94,7 +94,7 @@ Weather_standardized[numeric_vars] <- scale(WeatherData[numeric_vars])
 # Load required packages
 library(ggplot2)
 
-# Function to create histograms for original and standardized variables
+# Function to create histograms for original MaxTemp and standardized MaxTemp variables
 create_histograms <- function(original_data, standardized_data, var) {
   original_plot <- ggplot(original_data, aes(x = !!sym(var))) +
     geom_histogram(binwidth = 1, fill = "blue", color = "black", alpha = 0.7) +

@@ -190,3 +190,6 @@ ggplot(WeatherData, aes(x = RainToday)) +
   geom_bar(fill = "lightpink", color = "black", alpha = 0.7) +
   labs(title = "Bar Plot of RainToday", x = "RainToday", y = "Count") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
+#MultiVariate Plots
+

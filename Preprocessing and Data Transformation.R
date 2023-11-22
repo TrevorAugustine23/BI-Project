@@ -79,5 +79,9 @@ if (missing_values_after_imputation) {
 numeric_vars <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
 
 # Standardize the numeric variables
-Weather_standardized <- Weather
-Weather_standardized[numeric_vars] <- scale(Weather[numeric_vars])
+Weather_standardized <- WeatherData
+Weather_standardized[numeric_vars] <- scale(WeatherData[numeric_vars])
+
+# Load required packages
+library(ggplot2)
+library(dplyr)

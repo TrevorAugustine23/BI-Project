@@ -1,4 +1,3 @@
-
 # Load dataset
 WeatherData <- read.csv("data/Weather.csv", colClasses = c(
   MinTemp = "numeric",
@@ -24,6 +23,7 @@ WeatherData <- read.csv("data/Weather.csv", colClasses = c(
   RISK_MM = "numeric",
   RainTomorrow = "factor"
 ))
+
 # Define levels for categorical columns
 wind_dir_levels <- c("N", "NE", "E", "SE", "S", "SW", "W", "NW")
 rain_levels <- c("No", "Yes")
@@ -36,3 +36,16 @@ WeatherData$RainToday <- factor(WeatherData$RainToday, levels = rain_levels)
 WeatherData$RainTomorrow <- factor(WeatherData$RainTomorrow, levels = rain_levels)
 
 View(WeatherData)
+
+# List of categorical columns in your dataset
+categorical_columns <- c("WindGustDir", "WindDir9am", "WindDir3pm", "RainToday", "RainTomorrow")
+
+# Loop through each categorical column and generate frequency and percentage tables
+for (col in categorical_columns) {
+  column_freq <- table(WeatherData[[col]])
+  
+  cat(paste("# Number of instances in (", col, "):\n"))
+  class_counts <- cbind(frequency = column_freq, percentage = prop.table(column_freq) * 100)
+  print(class_counts)
+  cat("\n")
+}

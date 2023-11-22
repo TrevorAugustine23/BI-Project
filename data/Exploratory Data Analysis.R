@@ -169,12 +169,12 @@ if (!requireNamespace("ggplot2", quietly = TRUE)) {
 
 library(ggplot2)
 
-# Histogram for a numeric variable (e.g., Humidity9am)
+# Histogram for a numeric variable (Humidity9am)
 ggplot(WeatherData, aes(x = Humidity9am)) +
   geom_histogram(binwidth = 5, fill = "coral", color = "black", alpha = 0.7) +
   labs(title = "Histogram of Humidity9am", x = "Humidity9am", y = "Frequency")
 
-# Histogram  for another numeric variable (e.g., WindSpeed3pm)
+# Histogram  for another numeric variable (WindSpeed3pm)
 ggplot(WeatherData, aes(x = WindSpeed3pm)) +
   geom_histogram(binwidth = 5, fill = "lightblue", color = "black", alpha = 0.7) +
   labs(title = "Histogram of WindSpeed3pm", x = "WindSpeed3pm", y = "Frequency")

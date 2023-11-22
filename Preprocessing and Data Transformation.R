@@ -75,7 +75,7 @@ if (missing_values_after_imputation) {
 #replace WeatheData dataset with imputed dataset
 # Weather <- imputed_data
 
-# Standardize the numeric variable Maximum Temperature
+# Standardize the numeric variable Maximum Temperature to boost model performance
 WeatherData$standardized_MaxTemp <- scale(WeatherData$MaxTemp)
 
 # plot for the original and standardized variables

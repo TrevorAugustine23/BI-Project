@@ -179,13 +179,13 @@ ggplot(WeatherData, aes(x = WindSpeed3pm)) +
   geom_histogram(binwidth = 5, fill = "lightblue", color = "black", alpha = 0.7) +
   labs(title = "Histogram of WindSpeed3pm", x = "WindSpeed3pm", y = "Frequency")
 
-# Bar plot for a categorical variable (e.g., WindGustDir)
+# Bar plot for a categorical variable (WindGustDir)
 ggplot(WeatherData, aes(x = WindGustDir)) +
   geom_bar(fill = "lightgreen", color = "black", alpha = 0.7) +
   labs(title = "Bar Plot of WindGustDir", x = "WindGustDir", y = "Count") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
-# Bar plot for another categorical variable (e.g., RainToday)
+# Bar plot for another categorical variable (RainToday)
 ggplot(WeatherData, aes(x = RainToday)) +
   geom_bar(fill = "lightpink", color = "black", alpha = 0.7) +
   labs(title = "Bar Plot of RainToday", x = "RainToday", y = "Count") +

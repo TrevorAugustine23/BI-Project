@@ -192,4 +192,7 @@ ggplot(WeatherData, aes(x = RainToday)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
 #MultiVariate Plots
-
+# Scatter plot for two numeric variables (MaxTemp vs. Rainfall)
+ggplot(Weather, aes(x = Rainfall, y = MaxTemp)) +
+  geom_point(color = "blue", alpha = 0.7) +
+  labs(title = "Scatter Plot of MaxTemp vs. Rainfall", x = "Rainfall", y = "MaxTemp")

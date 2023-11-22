@@ -153,3 +153,10 @@ anova_result1 <- aov(MaxTemp ~ WindGustDir, data = WeatherData)
 # Display the ANOVA result for the first analysis
 cat("# ANOVA Result for MaxTemp and WindGustDir:\n")
 print(anova_result1)
+
+# ANOVA for another categorical variable (RainTomorrow) and a numeric variable (MaxTemp)
+anova_result2 <- aov(MaxTemp ~ RainTomorrow, data = WeatherData)
+
+# Display the ANOVA result for the second analysis
+cat("\n# ANOVA Result for MaxTemp and RainTomorrow:\n")
+print(anova_result2)

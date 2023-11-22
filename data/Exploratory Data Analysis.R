@@ -203,3 +203,9 @@ ggplot(WeatherData, aes(x = WindGustDir, y = MaxTemp, fill = WindGustDir)) +
   geom_boxplot() +
   labs(title = "Box Plot of MaxTemp Across WindGustDir", x = "WindGustDir", y = "MaxTemp") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
+# Violin plot for the distribution of a numeric variable across different levels of a categorical variable (e.g., RainToday vs. Humidity9am)
+ggplot(WeatherData, aes(x = RainToday, y = Humidity9am, fill = RainToday)) +
+  geom_violin() +
+  labs(title = "Violin Plot of Humidity9am Across RainToday", x = "RainToday", y = "Humidity9am")
+

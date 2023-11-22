@@ -209,3 +209,10 @@ ggplot(WeatherData, aes(x = RainToday, y = Humidity9am, fill = RainToday)) +
   geom_violin() +
   labs(title = "Violin Plot of Humidity9am Across RainToday", x = "RainToday", y = "Humidity9am")
 
+# Bar plot to show the count of occurrences for two categorical variables (WindGustDir and RainToday)
+ggplot(WeatherData, aes(x = WindGustDir, fill = RainToday)) +
+  geom_bar(position = "dodge") +
+  labs(title = "Bar Plot of WindGustDir Counts by RainToday", x = "WindGustDir", y = "Count") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+

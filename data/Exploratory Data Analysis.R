@@ -49,3 +49,31 @@ for (col in categorical_columns) {
   print(class_counts)
   cat("\n")
 }
+
+# List of numeric columns in your dataset
+numeric_columns <- c(
+  "MinTemp", "MaxTemp", "Rainfall", "Evaporation", "Sunshine",
+  "WindGustSpeed", "WindSpeed9am", "WindSpeed3pm",
+  "Humidity9am", "Humidity3pm",
+  "Pressure9am", "Pressure3pm",
+  "Cloud9am", "Cloud3pm",
+  "Temp9am", "Temp3pm",
+  "RISK_MM"
+)
+
+# Loop through each numeric column and calculate measures of central tendency
+for (col in numeric_columns) {
+  cat(paste("# Measures of central tendency for", col, ":\n"))
+  
+  # Mean
+  mean_val <- mean(WeatherData[[col]])
+  cat("Mean:", mean_val, "\n")
+  
+  # Median
+  median_val <- median(WeatherData[[col]])
+  cat("Median:", median_val, "\n")
+  
+  # Mode (using the Mode function defined below)
+  mode_val <- mode(WeatherData[[col]])
+  cat("Mode:", mode_val, "\n\n")
+}

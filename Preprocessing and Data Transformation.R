@@ -58,3 +58,6 @@ imputed_data_numeric <- complete(mice(WeatherData[, numeric_cols]))
 # Impute missing values in categorical columns using mode imputation
 categorical_cols <- sapply(WeatherData, is.factor)
 imputed_data_categorical <- complete(mice(WeatherData[, categorical_cols]))
+
+# Combine the imputed numeric and categorical datasets
+imputed_data <- cbind(imputed_data_numeric, imputed_data_categorical)

@@ -160,3 +160,9 @@ anova_result2 <- aov(MaxTemp ~ RainTomorrow, data = WeatherData)
 # Display the ANOVA result for the second analysis
 cat("\n# ANOVA Result for MaxTemp and RainTomorrow:\n")
 print(anova_result2)
+
+#Basic Visualizations
+##Univariate plots
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  install.packages("ggplot2")
+}

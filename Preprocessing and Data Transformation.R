@@ -36,3 +36,14 @@ WeatherData$RainToday <- factor(WeatherData$RainToday, levels = rain_levels)
 WeatherData$RainTomorrow <- factor(WeatherData$RainTomorrow, levels = rain_levels)
 
 View(WeatherData)
+
+# Check for missing values in the entire dataset
+missing_values <- any(is.na(WeatherData))
+
+# Display the result
+if (missing_values) {
+  cat("There are missing values in the dataset.\n")
+} else {
+  cat("There are no missing values in the dataset.\n")
+}
+

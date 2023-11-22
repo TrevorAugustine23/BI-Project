@@ -117,3 +117,32 @@ for (col in numeric_columns) {
   iqr_val <- IQR(WeatherData[[col]])
   cat("Interquartile Range (IQR):", iqr_val, "\n\n")
 }
+
+# List of numeric columns in your dataset
+numeric_columns <- c(
+  "MinTemp", "MaxTemp", "Rainfall", "Evaporation", "Sunshine",
+  "WindGustSpeed", "WindSpeed9am", "WindSpeed3pm",
+  "Humidity9am", "Humidity3pm",
+  "Pressure9am", "Pressure3pm",
+  "Cloud9am", "Cloud3pm",
+  "Temp9am", "Temp3pm",
+  "RISK_MM"
+)
+
+# Loop through pairs of numeric columns and calculate measures of relationship
+for (i in 1:(length(numeric_columns) - 1)) {
+  for (j in (i + 1):length(numeric_columns)) {
+    col1 <- numeric_columns[i]
+    col2 <- numeric_columns[j]
+    
+    cat(paste("# Measures of Relationship between", col1, "and", col2, ":\n"))
+    
+    # Correlation
+    correlation_val <- cor(WeatherData[[col1]], WeatherData[[col2]])
+    cat("Correlation:", correlation_val, "\n")
+    
+    # Covariance
+    covariance_val <- cov(WeatherData[[col1]], WeatherData[[col2]])
+    cat("Covariance:", covariance_val, "\n\n")
+  }
+}

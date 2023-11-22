@@ -24,3 +24,15 @@ WeatherData <- read.csv("data/Weather.csv", colClasses = c(
   RISK_MM = "numeric",
   RainTomorrow = "factor"
 ))
+# Define levels for categorical columns
+wind_dir_levels <- c("N", "NE", "E", "SE", "S", "SW", "W", "NW")
+rain_levels <- c("No", "Yes")
+
+# Update factor columns with levels
+WeatherData$WindGustDir <- factor(WeatherData$WindGustDir, levels = wind_dir_levels)
+WeatherData$WindDir9am <- factor(WeatherData$WindDir9am, levels = wind_dir_levels)
+WeatherData$WindDir3pm <- factor(WeatherData$WindDir3pm, levels = wind_dir_levels)
+WeatherData$RainToday <- factor(WeatherData$RainToday, levels = rain_levels)
+WeatherData$RainTomorrow <- factor(WeatherData$RainTomorrow, levels = rain_levels)
+
+View(WeatherData)

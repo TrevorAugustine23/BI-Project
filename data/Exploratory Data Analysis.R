@@ -168,3 +168,8 @@ if (!requireNamespace("ggplot2", quietly = TRUE)) {
 }
 
 library(ggplot2)
+
+# Histogram for a numeric variable (e.g., Humidity9am)
+ggplot(WeatherData, aes(x = Humidity9am)) +
+  geom_histogram(binwidth = 5, fill = "coral", color = "black", alpha = 0.7) +
+  labs(title = "Histogram of Humidity9am", x = "Humidity9am", y = "Frequency")

@@ -173,3 +173,8 @@ library(ggplot2)
 ggplot(WeatherData, aes(x = Humidity9am)) +
   geom_histogram(binwidth = 5, fill = "coral", color = "black", alpha = 0.7) +
   labs(title = "Histogram of Humidity9am", x = "Humidity9am", y = "Frequency")
+
+# Histogram  for another numeric variable (e.g., WindSpeed3pm)
+ggplot(WeatherData, aes(x = WindSpeed3pm)) +
+  geom_histogram(binwidth = 5, fill = "lightblue", color = "black", alpha = 0.7) +
+  labs(title = "Histogram of WindSpeed3pm", x = "WindSpeed3pm", y = "Frequency")

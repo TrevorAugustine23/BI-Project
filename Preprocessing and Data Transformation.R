@@ -87,3 +87,24 @@ library(ggplot2)
 # Install the dplyr package
 install.packages("dplyr")
 library(dplyr)
+
+# Function to create histograms for original and standardized variables
+plot_histograms <- function(data, original_vars, standardized_vars) {
+  original_data <- select(data, original_vars)
+  standardized_data <- select(data, standardized_vars)
+  
+  original_plots <- lapply(original_vars, function(var) {
+    ggplot(original_data, aes(x = !!sym(var))) +
+      geom_histogram(binwidth = 1, fill = "blue", color = "black", alpha = 0.7) +
+      labs(title = paste("Histogram of Original", var), x = var, y = "Frequency")
+  })
+  
+  standardized_plots <- lapply(standardized_vars, function(var) {
+    ggplot(standardized_data, aes(x = !!sym(var))) +
+      geom_histogram(binwidth = 0.2, fill = "orange", color = "black", alpha = 0.7) +
+      labs(title = paste("Histogram of Standardized", var), x = var, y = "Frequency")
+  })
+  
+  return(list(original_plots = original_plots, standardized_plots = standardized_plots))
+}
+

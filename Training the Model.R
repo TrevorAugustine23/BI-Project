@@ -111,3 +111,8 @@ rf_model <- train(WeatherData[, features], WeatherData[[target_variable]],
 logreg_model <- train(WeatherData[, features], WeatherData[[target_variable]],
                       method = "glm",  # Logistic Regression
                       trControl = trainControl(method = "repeatedcv", number = 5, repeats = 3))
+
+# Leave-One-Out Cross-Validation with Support Vector Machine (SVM)
+svm_model <- train(WeatherData[, features], WeatherData[[target_variable]],
+                   method = "svmRadial",  # Radial kernel SVM
+                   trControl = trainControl(method = "LOOCV"))

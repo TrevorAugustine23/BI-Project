@@ -19,3 +19,9 @@ predict_model <- function(req) {
   response <- list(predictions = predictions)
   return(response)
 }
+
+# Create a Plumber router
+api <- plumb("Consolidation.R")  # Replace "your_api.R" with your script filename
+
+# Define the endpoint and link it to the prediction function
+api$run(port = 8000)  # Set the port number as needed

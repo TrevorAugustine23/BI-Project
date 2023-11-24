@@ -46,3 +46,6 @@ target_variable <- "RainTomorrow"
 
 # Features
 features <- c("MinTemp", "MaxTemp", "Rainfall", "Evaporation", "Sunshine", "WindGustSpeed", "Humidity9am", "Humidity3pm")
+
+# Create a control object for cross-validation
+cv_control <- trainControl(method = "cv", number = 5)

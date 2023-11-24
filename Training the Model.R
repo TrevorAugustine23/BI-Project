@@ -68,3 +68,21 @@ features <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
 
 # Set the seed for reproducibility
 set.seed(123)
+
+# Create a function to calculate a statistic of interest
+calculate_statistic <- function(data, indices) {
+  sampled_data <- data[indices, ]
+  
+  # Replace the following line with the statistic you want to calculate
+  # For example, you can calculate the mean of a numeric variable
+  statistic <- mean(sampled_data$MaxTemp)
+  
+  return(statistic)
+}
+# Perform bootstrapping
+boot_results <- boot(data = WeatherData[, features],
+                     statistic = calculate_statistic,
+                     R = 1000)  # Number of bootstrap samples
+
+# Print the bootstrapped results
+print(boot_results)

@@ -117,10 +117,6 @@ svm_model <- train(WeatherData[, features], WeatherData[[target_variable]],
                    method = "svmRadial",  # Radial kernel SVM
                    trControl = trainControl(method = "LOOCV"))
 
-# Print model performance metrics
-print(rf_model)
-print(logreg_model)
-print(svm_model)
 
 #Model training
 # Classification problem and using Random Forests
@@ -155,10 +151,16 @@ target_type <- class(WeatherData[[target_variable]])
 # Features
 features <- c("MinTemp", "MaxTemp", "Rainfall", "Evaporation", "Sunshine", "WindGustSpeed", "Humidity9am", "Humidity3pm")
 
-rf_model <- train(WeatherData[, features], WeatherData[[target_variable]],
+cl_model <- train(WeatherData[, features], WeatherData[[target_variable]],
                  method = "rf",
                  trControl = trainControl(method = "cv", number = 5))
   
 # Print model details
+print(cl_model)
+
+# Model performance comparison using resamples
+# Print model performance metrics
 print(rf_model)
+print(logreg_model)
+print(svm_model)
   

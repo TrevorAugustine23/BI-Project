@@ -49,3 +49,8 @@ features <- c("MinTemp", "MaxTemp", "Rainfall", "Evaporation", "Sunshine", "Wind
 
 # Create a control object for cross-validation
 cv_control <- trainControl(method = "cv", number = 5)
+
+# Hyperparameter tuning for Random Forest using grid search
+rf_grid <- expand.grid(mtry = c(2, 4, 6),
+                       splitrule = c("gini", "extratrees"),
+                       min.node.size = c(1, 5, 10))

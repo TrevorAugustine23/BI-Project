@@ -36,3 +36,4 @@ WeatherData$RainToday <- factor(WeatherData$RainToday, levels = rain_levels)
 WeatherData$RainTomorrow <- factor(WeatherData$RainTomorrow, levels = rain_levels)
 
 View(WeatherData)
+

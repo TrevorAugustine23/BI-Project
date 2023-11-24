@@ -95,3 +95,14 @@ features <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
 
 # Set the seed for reproducibility
 set.seed(123)
+
+# Create a control object for cross-validation
+cv_control <- trainControl(method = "cv", number = 5)  # 5-fold cross-validation
+
+#replace WeatheData dataset with imputed dataset
+WeatherData <- imputed_data
+
+# Basic Cross-Validation with Random Forest
+rf_model <- train(WeatherData[, features], WeatherData[[target_variable]],
+                  method = "rf",  # Random Forest classifier
+                  trControl = cv_control)

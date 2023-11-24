@@ -50,7 +50,22 @@ features <- c("MinTemp", "MaxTemp", "Rainfall", "Evaporation", "Sunshine", "Wind
 # Create a control object for cross-validation
 cv_control <- trainControl(method = "cv", number = 5)
 
-# Hyperparameter tuning for Random Forest using grid search
-rf_grid <- expand.grid(mtry = c(2, 4, 6),
-                       splitrule = c("gini", "extratrees"),
-                       min.node.size = c(1, 5, 10))
+#replace WeatheData dataset with imputed dataset
+WeatherData <- imputed_data
+
+rf_model <- train(WeatherData[, features], WeatherData[[target_variable]],
+                  method = "rf",
+                  trControl = trainControl(method = "cv", number = 5, search = "grid"),  # Specify grid search
+                  tuneLength = 9,  # Number of grid points for tuning
+                  metric = "Accuracy")  
+
+# Print tuned model details
+print(rf_model)
+
+# Bagging Ensemble
+bagging_model <- train(WeatherData[, features], WeatherData[[target_variable]],
+                       method = "treebag",  # Bagging method
+                       trControl = trainControl(method = "cv", number = 5),
+                       metric = "Accuracy")
+
+

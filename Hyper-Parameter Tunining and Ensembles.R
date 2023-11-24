@@ -40,3 +40,9 @@ View(WeatherData)
 
 library(caret)
 library(randomForest)
+
+# Assuming "RainTomorrow" is the target variable
+target_variable <- "RainTomorrow"
+
+# Features
+features <- c("MinTemp", "MaxTemp", "Rainfall", "Evaporation", "Sunshine", "WindGustSpeed", "Humidity9am", "Humidity3pm")

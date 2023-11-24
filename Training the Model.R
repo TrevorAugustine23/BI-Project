@@ -123,22 +123,15 @@ print(logreg_model)
 print(svm_model)
 
 #Model training
-# Install and load required packages
-install.packages("randomForest")
-library(randomForest)
+# Install necessary packages
+if (!requireNamespace("caret", quietly = TRUE)) {
+  install.packages("caret")
+}
 
-# Assuming "WeatherData" is your dataset
-# Replace "RainTomorrow" with your actual target variable and adjust features accordingly
-target_variable <- "RainTomorrow"
-features <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
+if (!requireNamespace("randomForest", quietly = TRUE)) {
+  install.packages("randomForest")
+}
 
-# Set the seed for reproducibility
-set.seed(123)
-
-# Create a random forest classifier
-rf_model <- randomForest(WeatherData[[target_variable]] ~ WeatherData[, features],
-                         data = WeatherData,
-                         ntree = 100)  # Number of trees in the forest
-
-# Print the trained model
-print(rf_model)
+if (!requireNamespace("glmnet", quietly = TRUE)) {
+  install.packages("glmnet")
+}

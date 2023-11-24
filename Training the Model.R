@@ -51,6 +51,8 @@ set.seed(123)
 # Create indices for data splitting
 split_indices <- createDataPartition(WeatherData[[target_variable]], p = 0.8, list = FALSE)
 
-
+# Create training and testing sets
+train_data <- WeatherData[split_indices, ]
+test_data <- WeatherData[-split_indices, ]
 
 

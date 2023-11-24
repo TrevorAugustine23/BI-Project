@@ -63,3 +63,8 @@ cat("Testing set dimensions:", dim(test_data), "\n")
 install.packages("boot")
 library(boot)
 
+target_variable <- "RainTomorrow"
+features <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
+
+# Set the seed for reproducibility
+set.seed(123)

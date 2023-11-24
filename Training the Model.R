@@ -47,3 +47,10 @@ features <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
 
 # Set the seed for reproducibility
 set.seed(123)
+
+# Create indices for data splitting
+split_indices <- createDataPartition(WeatherData[[target_variable]], p = 0.8, list = FALSE)
+
+
+
+

@@ -121,3 +121,24 @@ svm_model <- train(WeatherData[, features], WeatherData[[target_variable]],
 print(rf_model)
 print(logreg_model)
 print(svm_model)
+
+#Model training
+# Install and load required packages
+install.packages("randomForest")
+library(randomForest)
+
+# Assuming "WeatherData" is your dataset
+# Replace "RainTomorrow" with your actual target variable and adjust features accordingly
+target_variable <- "RainTomorrow"
+features <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
+
+# Set the seed for reproducibility
+set.seed(123)
+
+# Create a random forest classifier
+rf_model <- randomForest(WeatherData[[target_variable]] ~ WeatherData[, features],
+                         data = WeatherData,
+                         ntree = 100)  # Number of trees in the forest
+
+# Print the trained model
+print(rf_model)

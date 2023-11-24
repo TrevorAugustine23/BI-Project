@@ -55,4 +55,7 @@ split_indices <- createDataPartition(WeatherData[[target_variable]], p = 0.8, li
 train_data <- WeatherData[split_indices, ]
 test_data <- WeatherData[-split_indices, ]
 
+# Print the dimensions of the training and testing sets
+cat("Training set dimensions:", dim(train_data), "\n")
+cat("Testing set dimensions:", dim(test_data), "\n")
 

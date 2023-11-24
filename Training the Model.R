@@ -140,3 +140,16 @@ if (!requireNamespace("glmnet", quietly = TRUE)) {
 library(caret)
 library(randomForest)
 library(glmnet)
+
+# Set the seed for reproducibility
+set.seed(123)
+
+
+# Assuming "RainTomorrow" is the target variable
+target_variable <- "RainTomorrow"
+
+# Check the data type of the target variable
+target_type <- class(WeatherData[[target_variable]])
+
+# Features
+features <- c("MinTemp", "MaxTemp", "Rainfall", "Evaporation", "Sunshine", "WindGustSpeed", "Humidity9am", "Humidity3pm")

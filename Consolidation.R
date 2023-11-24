@@ -8,3 +8,6 @@ library(caret)
 
 predict_model <- function(req) {
   input_data <- req$postBody  # Extract JSON data from the request
+  
+  # Convert JSON to a list or data frame for prediction
+  input_features <- fromJSON(input_data)

@@ -37,3 +37,7 @@ WeatherData$RainTomorrow <- factor(WeatherData$RainTomorrow, levels = rain_level
 
 View(WeatherData)
 
+# Install and load the caret package
+install.packages("caret")
+library(caret)
+

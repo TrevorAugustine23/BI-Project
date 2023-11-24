@@ -106,3 +106,8 @@ WeatherData <- imputed_data
 rf_model <- train(WeatherData[, features], WeatherData[[target_variable]],
                   method = "rf",  # Random Forest classifier
                   trControl = cv_control)
+
+# Repeated Cross-Validation with Logistic Regression
+logreg_model <- train(WeatherData[, features], WeatherData[[target_variable]],
+                      method = "glm",  # Logistic Regression
+                      trControl = trainControl(method = "repeatedcv", number = 5, repeats = 3))

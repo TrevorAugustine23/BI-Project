@@ -44,3 +44,6 @@ library(caret)
 #set-up target variables and features
 target_variable <- "RainTomorrow"
 features <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
+
+# Set the seed for reproducibility
+set.seed(123)

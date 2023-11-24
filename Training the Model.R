@@ -89,3 +89,9 @@ print(boot_results)
 # Install and load the caret package
 install.packages("caret")
 library(caret)
+
+target_variable <- "RainTomorrow"
+features <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
+
+# Set the seed for reproducibility
+set.seed(123)

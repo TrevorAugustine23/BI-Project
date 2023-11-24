@@ -116,3 +116,8 @@ logreg_model <- train(WeatherData[, features], WeatherData[[target_variable]],
 svm_model <- train(WeatherData[, features], WeatherData[[target_variable]],
                    method = "svmRadial",  # Radial kernel SVM
                    trControl = trainControl(method = "LOOCV"))
+
+# Print model performance metrics
+print(rf_model)
+print(logreg_model)
+print(svm_model)

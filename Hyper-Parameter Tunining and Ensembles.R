@@ -50,9 +50,10 @@ features <- c("MinTemp", "MaxTemp", "Rainfall", "Evaporation", "Sunshine", "Wind
 # Create a control object for cross-validation
 cv_control <- trainControl(method = "cv", number = 5)
 
-#replace WeatheData dataset with imputed dataset
+#replace WeatherData dataset with imputed dataset
 WeatherData <- imputed_data
 
+#Grid Search
 rf_model <- train(WeatherData[, features], WeatherData[[target_variable]],
                   method = "rf",
                   trControl = trainControl(method = "cv", number = 5, search = "grid"),  # Specify grid search

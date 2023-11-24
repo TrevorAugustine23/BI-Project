@@ -135,3 +135,8 @@ if (!requireNamespace("randomForest", quietly = TRUE)) {
 if (!requireNamespace("glmnet", quietly = TRUE)) {
   install.packages("glmnet")
 }
+
+# Load necessary libraries
+library(caret)
+library(randomForest)
+library(glmnet)

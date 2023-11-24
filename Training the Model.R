@@ -70,11 +70,10 @@ features <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
 set.seed(123)
 
 # Create a function to calculate a statistic of interest
-calculate_statistic <- function(data, indices) {
-  sampled_data <- data[indices, ]
+calculate_statistic <- function(data, split_indices) {
+  sampled_data <- data[split_indices, ]
   
-  # Replace the following line with the statistic you want to calculate
-  # For example, you can calculate the mean of a numeric variable
+  
   statistic <- mean(sampled_data$MaxTemp)
   
   return(statistic)

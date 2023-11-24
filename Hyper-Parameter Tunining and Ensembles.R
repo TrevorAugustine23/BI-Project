@@ -69,3 +69,6 @@ bagging_model <- train(WeatherData[, features], WeatherData[[target_variable]],
                        metric = "Accuracy")
 
 
+# Print ensemble model details
+print(bagging_model)
+

@@ -85,3 +85,7 @@ boot_results <- boot(data = WeatherData[, features],
 
 # Print the bootstrapped results
 print(boot_results)
+
+# Install and load the caret package
+install.packages("caret")
+library(caret)

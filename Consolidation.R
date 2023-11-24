@@ -11,3 +11,11 @@ predict_model <- function(req) {
   
   # Convert JSON to a list or data frame for prediction
   input_features <- fromJSON(input_data)
+  
+  # Make predictions using the trained model
+  predictions <- predict(rf_model, input_features)
+  
+  # Convert predictions to a JSON response
+  response <- list(predictions = predictions)
+  return(response)
+}

@@ -59,3 +59,7 @@ test_data <- WeatherData[-split_indices, ]
 cat("Training set dimensions:", dim(train_data), "\n")
 cat("Testing set dimensions:", dim(test_data), "\n")
 
+# Install and load the boot package for Bootstrapping 
+install.packages("boot")
+library(boot)
+

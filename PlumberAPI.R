@@ -71,5 +71,3 @@ predict_rain <-
     return(prediction)
   }
 
-# This allows us to process a plumber API
-api <- plumber::plumb("Consolidation.R")

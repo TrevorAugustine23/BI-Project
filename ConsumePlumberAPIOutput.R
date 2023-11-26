@@ -18,7 +18,7 @@ if (require("jsonlite")) {
 #Generate the URL required to access the API ---
   
 # We set this as a constant port 5022 running on localhost
-base_url <- "http://127.0.0.1:5022/rf_model"
+base_url <- "http://127.0.0.1:5022/rainfall"
 
 # We create a named list called "params".
 # It contains an element for each parameter we need to specify.
@@ -43,7 +43,8 @@ params <- list(
   Temp9am = 18,
   Temp3pm = 22,
   RainToday = "No",
-  RISK_MM = 0
+  RISK_MM = 0,
+  RainTomorrow = "Yes"
 )
 
 query_url <- httr::modify_url(url = base_url, query = params)
@@ -59,3 +60,11 @@ content(model_prediction)
 
 # We can print the specific result as follows
 content(model_prediction)[[1]]
+
+#Parse the response into the right format ----
+# We need to extract the results from the default JSON list format into
+# a non-list text format:
+model_prediction_raw <- content(model_prediction, as = "text",
+                                  encoding = "utf-8")
+jsonlite::fromJSON(model_prediction_raw)
+

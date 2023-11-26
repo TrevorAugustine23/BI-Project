@@ -30,7 +30,7 @@ loaded_rf_model <- readRDS("./models/saved_rf_model.rds")
 #* @param RISK_MM Risk of rain in mm
 #* @param RainTomorrow Actual observation: Will it rain tomorrow? (Yes/No)
 
-#* @post /predict_rain
+#* @get /rainfall
 
 predict_rain <-
   function(MaxTemp, MinTemp, Rainfall, Evaporation, Sunshine, WindGustDir,

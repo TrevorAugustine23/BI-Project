@@ -50,3 +50,12 @@ query_url <- httr::modify_url(url = base_url, query = params)
 
 #get url
 print(query_url)
+
+# The results of the model prediction through the API can also be obtained in R
+model_prediction <- GET(query_url)
+
+# Notice that the result displays additional JSON content
+content(model_prediction)
+
+# We can print the specific result as follows
+content(model_prediction)[[1]]

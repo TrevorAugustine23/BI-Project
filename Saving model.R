@@ -70,3 +70,46 @@ loaded_rf_model <- readRDS("./models/saved_rf_model.rds")
 #* @param RISK_MM Risk of rain in mm
 #* @param RainTomorrow Actual observation: Will it rain tomorrow? (Yes/No)
 
+#* @post /predict_rain
+
+predict_rain <-
+  function(MaxTemp, MinTemp, Rainfall, Evaporation, Sunshine, WindGustDir,
+           WindGustSpeed, WindDir9am, WindDir3pm, WindSpeed9am, WindSpeed3pm,
+           Humidity9am, Humidity3pm, Pressure9am, Pressure3pm, Cloud9am,
+           Cloud3pm, Temp9am, Temp3pm, RainToday, RISK_MM, RainTomorrow) {
+    
+    # Create a data frame using the arguments
+    to_be_predicted <- data.frame(
+      MaxTemp = as.numeric(MaxTemp),
+      MinTemp = as.numeric(MinTemp),
+      Rainfall = as.numeric(Rainfall),
+      Evaporation = as.numeric(Evaporation),
+      Sunshine = as.numeric(Sunshine),
+      WindGustDir = as.character(WindGustDir),
+      WindGustSpeed = as.numeric(WindGustSpeed),
+      WindDir9am = as.character(WindDir9am),
+      WindDir3pm = as.character(WindDir3pm),
+      WindSpeed9am = as.numeric(WindSpeed9am),
+      WindSpeed3pm = as.numeric(WindSpeed3pm),
+      Humidity9am = as.numeric(Humidity9am),
+      Humidity3pm = as.numeric(Humidity3pm),
+      Pressure9am = as.numeric(Pressure9am),
+      Pressure3pm = as.numeric(Pressure3pm),
+      Cloud9am = as.numeric(Cloud9am),
+      Cloud3pm = as.numeric(Cloud3pm),
+      Temp9am = as.numeric(Temp9am),
+      Temp3pm = as.numeric(Temp3pm),
+      RainToday = as.character(RainToday),
+      RISK_MM = as.numeric(RISK_MM),
+      RainTomorrow = as.character(RainTomorrow)
+    )
+    
+    # Use the loaded model to make predictions
+    prediction <- predict(loaded_rf_model, newdata = to_be_predicted)
+    
+    # Return the prediction
+    return(prediction)
+  }
+
+# This allows us to process a plumber API
+api <- plumber::plumb("Consolidation.R")

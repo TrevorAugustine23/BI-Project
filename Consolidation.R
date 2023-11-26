@@ -38,3 +38,8 @@ predictions_loaded_model <- predict(loaded_rf_model, newdata = new_data)
 
 # Print predictions
 print(predictions_loaded_model)
+
+#Plumber API
+# Load the saved RandomForest model
+loaded_rf_model <- readRDS("./models/saved_rf_model.rds")
+

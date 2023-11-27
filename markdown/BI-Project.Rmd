@@ -224,8 +224,9 @@ cat("\n# ANOVA Result for MaxTemp and RainTomorrow:\n")
 print(anova_result2)
 
 ```
+
 ## Basic Visualizations
-Univariate plots
+### Univariate plots
 ```{r}
 if (!requireNamespace("ggplot2", quietly = TRUE)) {
   install.packages("ggplot2")
@@ -255,7 +256,8 @@ ggplot(WeatherData, aes(x = RainToday)) +
   labs(title = "Bar Plot of RainToday", x = "RainToday", y = "Count") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
-MultiVariate Plots
+
+### Multivariate Plots
 ```{r}
 #MultiVariate Plots
 # Scatter plot for two numeric variables (MaxTemp vs. Rainfall)
@@ -297,5 +299,145 @@ ggplot(WeatherData, aes(x = WindGustDir, fill = WindGustDir)) +
 
 ```
 
+
+# Preprocessing and Data Transformation
+## Missingness
+```{r}
+# Check for missing values in the entire dataset
+missing_values <- any(is.na(WeatherData))
+
+# Display the result
+if (missing_values) {
+  cat("There are missing values in the dataset.\n")
+} else {
+  cat("There are no missing values in the dataset.\n")
+}
+```
+
+## Imputation
+```{r}
+#install mice package for multiple imputation
+# Set a CRAN mirror
+options(repos = c(CRAN = "https://cran.rstudio.com"))
+install.packages("mice")
+library(mice)
+
+# Impute missing values in numeric columns using mean imputation
+numeric_cols <- sapply(WeatherData, is.numeric)
+imputed_data_numeric <- complete(mice(WeatherData[, numeric_cols]))
+
+# Impute missing values in categorical columns using mode imputation
+categorical_cols <- sapply(WeatherData, is.factor)
+imputed_data_categorical <- complete(mice(WeatherData[, categorical_cols]))
+
+# Combine the imputed numeric and categorical datasets
+imputed_data <- cbind(imputed_data_numeric, imputed_data_categorical)
+```
+
+## Check for missing values
+```{r}
+# Check if there are still missing values in the imputed dataset
+missing_values_after_imputation <- any(is.na(imputed_data))
+
+# Display the result
+if (missing_values_after_imputation) {
+  cat("There are still missing values after imputation.\n")
+} else {
+  cat("All missing values have been successfully imputed.\n")
+}
+
+#replace WeatheData dataset with imputed dataset
+# WeatherData <- imputed_data
+```
+
+## Standardization of numerical variables for predictions
+```{r}
+# Standardize the Numeric variables that could be used for prediction
+numeric_vars <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
+
+# Standardize the numeric variables
+Weather_standardized <- WeatherData
+Weather_standardized[numeric_vars] <- scale(WeatherData[numeric_vars])
+# Assuming your dataset is already loaded and named "WeatherData"
+# Assuming you want to standardize "MaxTemp," "MinTemp," "Rainfall," and "Sunshine"
+
+# Numeric variables to be standardized
+numeric_vars <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
+
+# Standardize the numeric variables
+Weather_standardized <- WeatherData
+Weather_standardized[numeric_vars] <- scale(WeatherData[numeric_vars])
+
+# Load required packages
+library(ggplot2)
+
+# Function to create histograms for original MaxTemp and standardized MaxTemp variables
+create_histograms <- function(original_data, standardized_data, var) {
+  original_plot <- ggplot(original_data, aes(x = !!sym(var))) +
+    geom_histogram(binwidth = 1, fill = "blue", color = "black", alpha = 0.7) +
+    labs(title = paste("Histogram of Original", var), x = var, y = "Frequency")
+  
+  standardized_plot <- ggplot(standardized_data, aes(x = !!sym(var))) +
+    geom_histogram(binwidth = 0.2, fill = "orange", color = "black", alpha = 0.7) +
+    labs(title = paste("Histogram of Standardized", var), x = var, y = "Frequency")
+  
+  return(list(original_plot = original_plot, standardized_plot = standardized_plot))
+}
+
+# Create histograms for original and standardized variables
+histograms <- create_histograms(WeatherData, Weather_standardized, numeric_vars[1])
+
+# Display the histograms separately
+original_plot <- histograms$original_plot
+standardized_plot <- histograms$standardized_plot
+
+print(original_plot)
+print(standardized_plot)
+```
+
+# Hyper-Parameter Tuning and Ensembles
+## Cross-validation
+```{r}
+library(caret)
+library(randomForest)
+
+# Assuming "RainTomorrow" is the target variable
+target_variable <- "RainTomorrow"
+
+# Features
+features <- c("MinTemp", "MaxTemp", "Rainfall", "Evaporation", "Sunshine", "WindGustSpeed", "Humidity9am", "Humidity3pm")
+
+# Create a control object for cross-validation
+cv_control <- trainControl(method = "cv", number = 5)
+```
+
+## Grid Search
+```{r}
+#replace WeatherData dataset with imputed dataset
+WeatherData <- imputed_data
+
+#Grid Search
+rf_model <- train(WeatherData[, features], WeatherData[[target_variable]],
+                  method = "rf",
+                  trControl = trainControl(method = "cv", number = 5, search = "grid"),  # Specify grid search
+                  tuneLength = 9,  # Number of grid points for tuning
+                  metric = "Accuracy")  
+
+# Print tuned model details
+print(rf_model)
+```
+
+## Bagging Ensemble
+```{r}
+# Bagging Ensemble
+bagging_model <- train(WeatherData[, features], WeatherData[[target_variable]],
+                       method = "treebag",  # Bagging method
+                       trControl = trainControl(method = "cv", number = 5),
+                       metric = "Accuracy")
+
+
+# Print ensemble model details
+print(bagging_model)
+```
 
 

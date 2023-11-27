@@ -16,6 +16,19 @@ Trevor Okinda
   - [Measures of Relationship](#measures-of-relationship)
   - [ANOVA](#anova)
   - [Basic Visualizations](#basic-visualizations)
+    - [Univariate plots](#univariate-plots)
+    - [Multivariate Plots](#multivariate-plots)
+- [Preprocessing and Data
+  Transformation](#preprocessing-and-data-transformation)
+  - [Missingness](#missingness)
+  - [Imputation](#imputation)
+  - [Check for missing values](#check-for-missing-values)
+  - [Standardization of numerical variables for
+    predictions](#standardization-of-numerical-variables-for-predictions)
+- [Hyper-Parameter Tuning and
+  Ensembles](#hyper-parameter-tuning-and-ensembles)
+  - [Cross-validation](#cross-validation)
+  - [Grid Search](#grid-search)
 
 # Student Details
 
@@ -1055,7 +1068,7 @@ print(anova_result2)
 
 ## Basic Visualizations
 
-Univariate plots
+### Univariate plots
 
 ``` r
 if (!requireNamespace("ggplot2", quietly = TRUE)) {
@@ -1100,7 +1113,8 @@ ggplot(WeatherData, aes(x = RainToday)) +
 ```
 
 ![](BI-Project_files/figure-gfm/unnamed-chunk-6-4.png)<!-- -->
-MultiVariate Plots
+
+### Multivariate Plots
 
 ``` r
 #MultiVariate Plots
@@ -1164,3 +1178,280 @@ ggplot(WeatherData, aes(x = WindGustDir, fill = WindGustDir)) +
 ```
 
 ![](BI-Project_files/figure-gfm/unnamed-chunk-7-5.png)<!-- -->
+
+# Preprocessing and Data Transformation
+
+## Missingness
+
+``` r
+# Check for missing values in the entire dataset
+missing_values <- any(is.na(WeatherData))
+
+# Display the result
+if (missing_values) {
+  cat("There are missing values in the dataset.\n")
+} else {
+  cat("There are no missing values in the dataset.\n")
+}
+```
+
+    ## There are missing values in the dataset.
+
+## Imputation
+
+``` r
+#install mice package for multiple imputation
+# Set a CRAN mirror
+options(repos = c(CRAN = "https://cran.rstudio.com"))
+install.packages("mice")
+```
+
+    ## Installing package into 'C:/Users/Trevor/AppData/Local/R/win-library/4.3'
+    ## (as 'lib' is unspecified)
+
+    ## package 'mice' successfully unpacked and MD5 sums checked
+    ## 
+    ## The downloaded binary packages are in
+    ##  C:\Users\Trevor\AppData\Local\Temp\RtmpEbnzXE\downloaded_packages
+
+``` r
+library(mice)
+```
+
+    ## 
+    ## Attaching package: 'mice'
+
+    ## The following object is masked from 'package:stats':
+    ## 
+    ##     filter
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     cbind, rbind
+
+``` r
+# Impute missing values in numeric columns using mean imputation
+numeric_cols <- sapply(WeatherData, is.numeric)
+imputed_data_numeric <- complete(mice(WeatherData[, numeric_cols]))
+```
+
+    ## 
+    ##  iter imp variable
+    ##   1   1  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   1   2  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   1   3  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   1   4  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   1   5  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   2   1  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   2   2  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   2   3  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   2   4  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   2   5  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   3   1  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   3   2  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   3   3  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   3   4  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   3   5  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   4   1  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   4   2  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   4   3  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   4   4  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   4   5  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   5   1  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   5   2  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   5   3  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   5   4  Sunshine  WindGustSpeed  WindSpeed9am
+    ##   5   5  Sunshine  WindGustSpeed  WindSpeed9am
+
+``` r
+# Impute missing values in categorical columns using mode imputation
+categorical_cols <- sapply(WeatherData, is.factor)
+imputed_data_categorical <- complete(mice(WeatherData[, categorical_cols]))
+```
+
+    ## 
+    ##  iter imp variable
+    ##   1   1  WindGustDir  WindDir9am  WindDir3pm
+    ##   1   2  WindGustDir  WindDir9am  WindDir3pm
+    ##   1   3  WindGustDir  WindDir9am  WindDir3pm
+    ##   1   4  WindGustDir  WindDir9am  WindDir3pm
+    ##   1   5  WindGustDir  WindDir9am  WindDir3pm
+    ##   2   1  WindGustDir  WindDir9am  WindDir3pm
+    ##   2   2  WindGustDir  WindDir9am  WindDir3pm
+    ##   2   3  WindGustDir  WindDir9am  WindDir3pm
+    ##   2   4  WindGustDir  WindDir9am  WindDir3pm
+    ##   2   5  WindGustDir  WindDir9am  WindDir3pm
+    ##   3   1  WindGustDir  WindDir9am  WindDir3pm
+    ##   3   2  WindGustDir  WindDir9am  WindDir3pm
+    ##   3   3  WindGustDir  WindDir9am  WindDir3pm
+    ##   3   4  WindGustDir  WindDir9am  WindDir3pm
+    ##   3   5  WindGustDir  WindDir9am  WindDir3pm
+    ##   4   1  WindGustDir  WindDir9am  WindDir3pm
+    ##   4   2  WindGustDir  WindDir9am  WindDir3pm
+    ##   4   3  WindGustDir  WindDir9am  WindDir3pm
+    ##   4   4  WindGustDir  WindDir9am  WindDir3pm
+    ##   4   5  WindGustDir  WindDir9am  WindDir3pm
+    ##   5   1  WindGustDir  WindDir9am  WindDir3pm
+    ##   5   2  WindGustDir  WindDir9am  WindDir3pm
+    ##   5   3  WindGustDir  WindDir9am  WindDir3pm
+    ##   5   4  WindGustDir  WindDir9am  WindDir3pm
+    ##   5   5  WindGustDir  WindDir9am  WindDir3pm
+
+``` r
+# Combine the imputed numeric and categorical datasets
+imputed_data <- cbind(imputed_data_numeric, imputed_data_categorical)
+```
+
+## Check for missing values
+
+``` r
+# Check if there are still missing values in the imputed dataset
+missing_values_after_imputation <- any(is.na(imputed_data))
+
+# Display the result
+if (missing_values_after_imputation) {
+  cat("There are still missing values after imputation.\n")
+} else {
+  cat("All missing values have been successfully imputed.\n")
+}
+```
+
+    ## All missing values have been successfully imputed.
+
+``` r
+#replace WeatheData dataset with imputed dataset
+# WeatherData <- imputed_data
+```
+
+## Standardization of numerical variables for predictions
+
+``` r
+# Standardize the Numeric variables that could be used for prediction
+numeric_vars <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
+
+# Standardize the numeric variables
+Weather_standardized <- WeatherData
+Weather_standardized[numeric_vars] <- scale(WeatherData[numeric_vars])
+# Assuming your dataset is already loaded and named "WeatherData"
+# Assuming you want to standardize "MaxTemp," "MinTemp," "Rainfall," and "Sunshine"
+
+# Numeric variables to be standardized
+numeric_vars <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
+
+# Standardize the numeric variables
+Weather_standardized <- WeatherData
+Weather_standardized[numeric_vars] <- scale(WeatherData[numeric_vars])
+
+# Load required packages
+library(ggplot2)
+
+# Function to create histograms for original MaxTemp and standardized MaxTemp variables
+create_histograms <- function(original_data, standardized_data, var) {
+  original_plot <- ggplot(original_data, aes(x = !!sym(var))) +
+    geom_histogram(binwidth = 1, fill = "blue", color = "black", alpha = 0.7) +
+    labs(title = paste("Histogram of Original", var), x = var, y = "Frequency")
+  
+  standardized_plot <- ggplot(standardized_data, aes(x = !!sym(var))) +
+    geom_histogram(binwidth = 0.2, fill = "orange", color = "black", alpha = 0.7) +
+    labs(title = paste("Histogram of Standardized", var), x = var, y = "Frequency")
+  
+  return(list(original_plot = original_plot, standardized_plot = standardized_plot))
+}
+
+# Create histograms for original and standardized variables
+histograms <- create_histograms(WeatherData, Weather_standardized, numeric_vars[1])
+
+# Display the histograms separately
+original_plot <- histograms$original_plot
+standardized_plot <- histograms$standardized_plot
+
+print(original_plot)
+```
+
+![](BI-Project_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+``` r
+print(standardized_plot)
+```
+
+![](BI-Project_files/figure-gfm/unnamed-chunk-11-2.png)<!-- -->
+
+# Hyper-Parameter Tuning and Ensembles
+
+## Cross-validation
+
+``` r
+library(caret)
+```
+
+    ## Loading required package: lattice
+
+``` r
+library(randomForest)
+```
+
+    ## randomForest 4.7-1.1
+
+    ## Type rfNews() to see new features/changes/bug fixes.
+
+    ## 
+    ## Attaching package: 'randomForest'
+
+    ## The following object is masked from 'package:ggplot2':
+    ## 
+    ##     margin
+
+``` r
+# Assuming "RainTomorrow" is the target variable
+target_variable <- "RainTomorrow"
+
+# Features
+features <- c("MinTemp", "MaxTemp", "Rainfall", "Evaporation", "Sunshine", "WindGustSpeed", "Humidity9am", "Humidity3pm")
+
+# Create a control object for cross-validation
+cv_control <- trainControl(method = "cv", number = 5)
+```
+
+## Grid Search
+
+``` r
+#replace WeatherData dataset with imputed dataset
+WeatherData <- imputed_data
+
+#Grid Search
+rf_model <- train(WeatherData[, features], WeatherData[[target_variable]],
+                  method = "rf",
+                  trControl = trainControl(method = "cv", number = 5, search = "grid"),  # Specify grid search
+                  tuneLength = 9,  # Number of grid points for tuning
+                  metric = "Accuracy")  
+```
+
+    ## note: only 7 unique complexity parameters in default grid. Truncating the grid to 7 .
+
+``` r
+# Print tuned model details
+print(rf_model)
+```
+
+    ## Random Forest 
+    ## 
+    ## 366 samples
+    ##   8 predictor
+    ##   2 classes: 'No', 'Yes' 
+    ## 
+    ## No pre-processing
+    ## Resampling: Cross-Validated (5 fold) 
+    ## Summary of sample sizes: 293, 293, 292, 293, 293 
+    ## Resampling results across tuning parameters:
+    ## 
+    ##   mtry  Accuracy   Kappa    
+    ##   2     0.8689745  0.4426153
+    ##   3     0.8634580  0.4182866
+    ##   4     0.8552388  0.4020786
+    ##   5     0.8634580  0.4237933
+    ##   6     0.8579785  0.4205883
+    ##   7     0.8579785  0.4114599
+    ##   8     0.8497593  0.3904444
+    ## 
+    ## Accuracy was used to select the optimal model using the largest value.
+    ## The final value used for the model was mtry = 2.

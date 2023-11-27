@@ -37,6 +37,7 @@ Trevor Okinda
   - [Model without resamples](#model-without-resamples)
   - [Models perfomance metrics](#models-perfomance-metrics)
 - [Save the model](#save-the-model)
+- [Plumber API](#plumber-api)
 
 # Student Details
 
@@ -1220,7 +1221,7 @@ install.packages("mice")
     ## package 'mice' successfully unpacked and MD5 sums checked
     ## 
     ## The downloaded binary packages are in
-    ##  C:\Users\Trevor\AppData\Local\Temp\RtmpOIYvWy\downloaded_packages
+    ##  C:\Users\Trevor\AppData\Local\Temp\Rtmpisww7C\downloaded_packages
 
 ``` r
 library(mice)
@@ -1449,17 +1450,17 @@ print(rf_model)
     ## 
     ## No pre-processing
     ## Resampling: Cross-Validated (5 fold) 
-    ## Summary of sample sizes: 293, 293, 292, 293, 293 
+    ## Summary of sample sizes: 293, 292, 293, 293, 293 
     ## Resampling results across tuning parameters:
     ## 
     ##   mtry  Accuracy   Kappa    
-    ##   2     0.8688264  0.4652800
-    ##   3     0.8715291  0.4880767
-    ##   4     0.8660496  0.4565847
-    ##   5     0.8578304  0.4375468
-    ##   6     0.8523510  0.4248613
-    ##   7     0.8578304  0.4369800
-    ##   8     0.8523510  0.4219588
+    ##   2     0.8661237  0.4376316
+    ##   3     0.8743428  0.4950121
+    ##   4     0.8743058  0.4883156
+    ##   5     0.8716031  0.4872350
+    ##   6     0.8688634  0.4688574
+    ##   7     0.8661607  0.4783684
+    ##   8     0.8688634  0.4767903
     ## 
     ## Accuracy was used to select the optimal model using the largest value.
     ## The final value used for the model was mtry = 3.
@@ -1486,11 +1487,11 @@ print(bagging_model)
     ## 
     ## No pre-processing
     ## Resampling: Cross-Validated (5 fold) 
-    ## Summary of sample sizes: 293, 293, 293, 293, 292 
+    ## Summary of sample sizes: 293, 293, 293, 292, 293 
     ## Resampling results:
     ## 
     ##   Accuracy   Kappa    
-    ##   0.8389485  0.3737097
+    ##   0.8360607  0.3594514
 
 # Training the Model
 
@@ -1659,12 +1660,12 @@ print(cl_model)
     ## Resampling results across tuning parameters:
     ## 
     ##   mtry  Accuracy   Kappa    
-    ##   2     0.8633469  0.4387610
-    ##   5     0.8579045  0.4365355
-    ##   8     0.8633839  0.4588577
+    ##   2     0.8661237  0.4387563
+    ##   5     0.8688264  0.4668434
+    ##   8     0.8633469  0.4493577
     ## 
     ## Accuracy was used to select the optimal model using the largest value.
-    ## The final value used for the model was mtry = 8.
+    ## The final value used for the model was mtry = 5.
 
 ``` r
 # Model performance comparison using resamples
@@ -1684,9 +1685,9 @@ print(rf_model)
     ## Resampling results across tuning parameters:
     ## 
     ##   mtry  Accuracy   Kappa    
-    ##   2     0.8251388  0.2635145
-    ##   3     0.8251018  0.2807230
-    ##   4     0.8142540  0.2624639
+    ##   2     0.8278045  0.2796066
+    ##   3     0.8278045  0.3001840
+    ##   4     0.8251388  0.3117140
     ## 
     ## Accuracy was used to select the optimal model using the largest value.
     ## The final value used for the model was mtry = 2.
@@ -1703,11 +1704,11 @@ print(logreg_model)
     ## 
     ## No pre-processing
     ## Resampling: Cross-Validated (5 fold, repeated 3 times) 
-    ## Summary of sample sizes: 293, 293, 292, 293, 293, 293, ... 
+    ## Summary of sample sizes: 293, 293, 293, 293, 292, 292, ... 
     ## Resampling results:
     ## 
-    ##   Accuracy   Kappa    
-    ##   0.8307047  0.2954807
+    ##   Accuracy  Kappa    
+    ##   0.829668  0.2787558
 
 ``` r
 print(svm_model)
@@ -1726,12 +1727,12 @@ print(svm_model)
     ## 
     ##   C     Accuracy   Kappa    
     ##   0.25  0.8196721  0.0000000
-    ##   0.50  0.8360656  0.2129032
-    ##   1.00  0.8224044  0.1945968
+    ##   0.50  0.8306011  0.1727909
+    ##   1.00  0.8278689  0.2068111
     ## 
-    ## Tuning parameter 'sigma' was held constant at a value of 0.5043526
+    ## Tuning parameter 'sigma' was held constant at a value of 0.5881153
     ## Accuracy was used to select the optimal model using the largest value.
-    ## The final values used for the model were sigma = 0.5043526 and C = 0.5.
+    ## The final values used for the model were sigma = 0.5881153 and C = 0.5.
 
 # Save the model
 
@@ -1779,3 +1780,78 @@ print(predictions_loaded_model)
 
     ## [1] No
     ## Levels: No Yes
+
+# Plumber API
+
+``` r
+# Load the saved RandomForest model
+loaded_rf_model <- readRDS("./models/saved_rf_model.rds")
+
+#* @apiTitle Rain Prediction Model API
+
+#* @apiDescription Used to predict whether it will rain tomorrow.
+
+#* @param MaxTemp Maximum temperature
+#* @param MinTemp Minimum temperature
+#* @param Rainfall Amount of rainfall
+#* @param Evaporation Evaporation
+#* @param Sunshine Sunshine hours
+#* @param WindGustDir Wind direction at gust time
+#* @param WindGustSpeed Wind speed (gust time)
+#* @param WindDir9am Wind direction at 9 am
+#* @param WindDir3pm Wind direction at 3 pm
+#* @param WindSpeed9am Wind speed (9 am)
+#* @param WindSpeed3pm Wind speed (3 pm)
+#* @param Humidity9am Humidity at 9 am
+#* @param Humidity3pm Humidity at 3 pm
+#* @param Pressure9am Atmospheric pressure at 9 am
+#* @param Pressure3pm Atmospheric pressure at 3 pm
+#* @param Cloud9am Cloud cover at 9 am
+#* @param Cloud3pm Cloud cover at 3 pm
+#* @param Temp9am Temperature at 9 am
+#* @param Temp3pm Temperature at 3 pm
+#* @param RainToday Whether it will rain today (Yes/No)
+#* @param RISK_MM Risk of rain in mm
+#* @param RainTomorrow Actual observation: Will it rain tomorrow? (Yes/No)
+
+#* @get /rainfall
+
+predict_rain <-
+  function(MaxTemp, MinTemp, Rainfall, Evaporation, Sunshine, WindGustDir,
+           WindGustSpeed, WindDir9am, WindDir3pm, WindSpeed9am, WindSpeed3pm,
+           Humidity9am, Humidity3pm, Pressure9am, Pressure3pm, Cloud9am,
+           Cloud3pm, Temp9am, Temp3pm, RainToday, RISK_MM, RainTomorrow) {
+    
+    # Create a data frame using the arguments
+    to_be_predicted <- data.frame(
+      MaxTemp = as.numeric(MaxTemp),
+      MinTemp = as.numeric(MinTemp),
+      Rainfall = as.numeric(Rainfall),
+      Evaporation = as.numeric(Evaporation),
+      Sunshine = as.numeric(Sunshine),
+      WindGustDir = as.character(WindGustDir),
+      WindGustSpeed = as.numeric(WindGustSpeed),
+      WindDir9am = as.character(WindDir9am),
+      WindDir3pm = as.character(WindDir3pm),
+      WindSpeed9am = as.numeric(WindSpeed9am),
+      WindSpeed3pm = as.numeric(WindSpeed3pm),
+      Humidity9am = as.numeric(Humidity9am),
+      Humidity3pm = as.numeric(Humidity3pm),
+      Pressure9am = as.numeric(Pressure9am),
+      Pressure3pm = as.numeric(Pressure3pm),
+      Cloud9am = as.numeric(Cloud9am),
+      Cloud3pm = as.numeric(Cloud3pm),
+      Temp9am = as.numeric(Temp9am),
+      Temp3pm = as.numeric(Temp3pm),
+      RainToday = as.character(RainToday),
+      RISK_MM = as.numeric(RISK_MM),
+      RainTomorrow = as.character(RainTomorrow)
+    )
+    
+    # Use the loaded model to make predictions
+    prediction <- predict(loaded_rf_model, newdata = to_be_predicted)
+    
+    # Return the prediction
+    return(prediction)
+  }
+```

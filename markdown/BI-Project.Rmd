@@ -176,5 +176,55 @@ for (col in numeric_columns) {
   
 }
 ```
+## Measures of Relationship
+```{r}
+# List of numeric columns in the dataset
+numeric_columns <- c(
+  "MinTemp", "MaxTemp", "Rainfall", "Evaporation", "Sunshine",
+  "WindGustSpeed", "WindSpeed9am", "WindSpeed3pm",
+  "Humidity9am", "Humidity3pm",
+  "Pressure9am", "Pressure3pm",
+  "Cloud9am", "Cloud3pm",
+  "Temp9am", "Temp3pm",
+  "RISK_MM"
+)
+
+# Loop through pairs of numeric columns and calculate measures of relationship
+for (i in 1:(length(numeric_columns) - 1)) {
+  for (j in (i + 1):length(numeric_columns)) {
+    col1 <- numeric_columns[i]
+    col2 <- numeric_columns[j]
+    
+    cat(paste("# Measures of Relationship between", col1, "and", col2, ":\n"))
+    
+    # Correlation
+    correlation_val <- cor(WeatherData[[col1]], WeatherData[[col2]])
+    cat("Correlation:", correlation_val, "\n")
+    
+    # Covariance
+    covariance_val <- cov(WeatherData[[col1]], WeatherData[[col2]])
+    cat("Covariance:", covariance_val, "\n\n")
+  }
+}
+```
+## ANOVA
+```{r}
+# ANOVA for a categorical variable (WindGustDir) and a numeric variable (MaxTemp)
+anova_result1 <- aov(MaxTemp ~ WindGustDir, data = WeatherData)
+
+# Display the ANOVA result for the first analysis
+cat("# ANOVA Result for MaxTemp and WindGustDir:\n")
+print(anova_result1)
+
+# ANOVA for another categorical variable (RainTomorrow) and a numeric variable (MaxTemp)
+anova_result2 <- aov(MaxTemp ~ RainTomorrow, data = WeatherData)
+
+# Display the ANOVA result for the second analysis
+cat("\n# ANOVA Result for MaxTemp and RainTomorrow:\n")
+print(anova_result2)
+
+```
+## Basic Visualizations
+
 
 

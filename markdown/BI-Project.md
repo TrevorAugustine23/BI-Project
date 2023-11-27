@@ -13,6 +13,9 @@ Trevor Okinda
   - [Categorical columns analysis](#categorical-columns-analysis)
   - [Measures of Central Tendency](#measures-of-central-tendency)
   - [Measures of Distribution](#measures-of-distribution)
+  - [Measures of Relationship](#measures-of-relationship)
+  - [ANOVA](#anova)
+  - [Basic Visualizations](#basic-visualizations)
 
 # Student Details
 
@@ -418,3 +421,636 @@ for (col in numeric_columns) {
     ## Range: 0 39.8 
     ## Variance: 17.85738 
     ## Standard Deviation: 4.2258
+
+## Measures of Relationship
+
+``` r
+# List of numeric columns in the dataset
+numeric_columns <- c(
+  "MinTemp", "MaxTemp", "Rainfall", "Evaporation", "Sunshine",
+  "WindGustSpeed", "WindSpeed9am", "WindSpeed3pm",
+  "Humidity9am", "Humidity3pm",
+  "Pressure9am", "Pressure3pm",
+  "Cloud9am", "Cloud3pm",
+  "Temp9am", "Temp3pm",
+  "RISK_MM"
+)
+
+# Loop through pairs of numeric columns and calculate measures of relationship
+for (i in 1:(length(numeric_columns) - 1)) {
+  for (j in (i + 1):length(numeric_columns)) {
+    col1 <- numeric_columns[i]
+    col2 <- numeric_columns[j]
+    
+    cat(paste("# Measures of Relationship between", col1, "and", col2, ":\n"))
+    
+    # Correlation
+    correlation_val <- cor(WeatherData[[col1]], WeatherData[[col2]])
+    cat("Correlation:", correlation_val, "\n")
+    
+    # Covariance
+    covariance_val <- cov(WeatherData[[col1]], WeatherData[[col2]])
+    cat("Covariance:", covariance_val, "\n\n")
+  }
+}
+```
+
+    ## # Measures of Relationship between MinTemp and MaxTemp :
+    ## Correlation: 0.7524708 
+    ## Covariance: 30.33639 
+    ## 
+    ## # Measures of Relationship between MinTemp and Rainfall :
+    ## Correlation: 0.2019387 
+    ## Covariance: 5.142132 
+    ## 
+    ## # Measures of Relationship between MinTemp and Evaporation :
+    ## Correlation: 0.6499302 
+    ## Covariance: 10.45423 
+    ## 
+    ## # Measures of Relationship between MinTemp and Sunshine :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between MinTemp and WindGustSpeed :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between MinTemp and WindSpeed9am :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between MinTemp and WindSpeed3pm :
+    ## Correlation: -0.06592182 
+    ## Covariance: -3.51828 
+    ## 
+    ## # Measures of Relationship between MinTemp and Humidity9am :
+    ## Correlation: -0.2078971 
+    ## Covariance: -16.4574 
+    ## 
+    ## # Measures of Relationship between MinTemp and Humidity3pm :
+    ## Correlation: -0.04070877 
+    ## Covariance: -4.133586 
+    ## 
+    ## # Measures of Relationship between MinTemp and Pressure9am :
+    ## Correlation: -0.501707 
+    ## Covariance: -20.21366 
+    ## 
+    ## # Measures of Relationship between MinTemp and Pressure3pm :
+    ## Correlation: -0.4980069 
+    ## Covariance: -19.41403 
+    ## 
+    ## # Measures of Relationship between MinTemp and Cloud9am :
+    ## Correlation: 0.2157758 
+    ## Covariance: 3.843625 
+    ## 
+    ## # Measures of Relationship between MinTemp and Cloud3pm :
+    ## Correlation: 0.1183974 
+    ## Covariance: 1.902219 
+    ## 
+    ## # Measures of Relationship between MinTemp and Temp9am :
+    ## Correlation: 0.9167454 
+    ## Covariance: 31.10542 
+    ## 
+    ## # Measures of Relationship between MinTemp and Temp3pm :
+    ## Correlation: 0.7227305 
+    ## Covariance: 28.9189 
+    ## 
+    ## # Measures of Relationship between MinTemp and RISK_MM :
+    ## Correlation: 0.2185511 
+    ## Covariance: 5.565145 
+    ## 
+    ## # Measures of Relationship between MaxTemp and Rainfall :
+    ## Correlation: -0.07355958 
+    ## Covariance: -2.079734 
+    ## 
+    ## # Measures of Relationship between MaxTemp and Evaporation :
+    ## Correlation: 0.6900263 
+    ## Covariance: 12.32356 
+    ## 
+    ## # Measures of Relationship between MaxTemp and Sunshine :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between MaxTemp and WindGustSpeed :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between MaxTemp and WindSpeed9am :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between MaxTemp and WindSpeed3pm :
+    ## Correlation: -0.1678731 
+    ## Covariance: -9.947804 
+    ## 
+    ## # Measures of Relationship between MaxTemp and Humidity9am :
+    ## Correlation: -0.3596017 
+    ## Covariance: -31.60672 
+    ## 
+    ## # Measures of Relationship between MaxTemp and Humidity3pm :
+    ## Correlation: -0.5333269 
+    ## Covariance: -60.12809 
+    ## 
+    ## # Measures of Relationship between MaxTemp and Pressure9am :
+    ## Correlation: -0.2908826 
+    ## Covariance: -13.0124 
+    ## 
+    ## # Measures of Relationship between MaxTemp and Pressure3pm :
+    ## Correlation: -0.3793937 
+    ## Covariance: -16.42159 
+    ## 
+    ## # Measures of Relationship between MaxTemp and Cloud9am :
+    ## Correlation: -0.1757296 
+    ## Covariance: -3.475586 
+    ## 
+    ## # Measures of Relationship between MaxTemp and Cloud3pm :
+    ## Correlation: -0.1359907 
+    ## Covariance: -2.425897 
+    ## 
+    ## # Measures of Relationship between MaxTemp and Temp9am :
+    ## Correlation: 0.8706035 
+    ## Covariance: 32.79839 
+    ## 
+    ## # Measures of Relationship between MaxTemp and Temp3pm :
+    ## Correlation: 0.9892608 
+    ## Covariance: 43.95022 
+    ## 
+    ## # Measures of Relationship between MaxTemp and RISK_MM :
+    ## Correlation: 0.02755709 
+    ## Covariance: 0.7791155 
+    ## 
+    ## # Measures of Relationship between Rainfall and Evaporation :
+    ## Correlation: -0.007292963 
+    ## Covariance: -0.08226664 
+    ## 
+    ## # Measures of Relationship between Rainfall and Sunshine :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between Rainfall and WindGustSpeed :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between Rainfall and WindSpeed9am :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between Rainfall and WindSpeed3pm :
+    ## Correlation: 0.05600849 
+    ## Covariance: 2.09628 
+    ## 
+    ## # Measures of Relationship between Rainfall and Humidity9am :
+    ## Correlation: 0.1501089 
+    ## Covariance: 8.333235 
+    ## 
+    ## # Measures of Relationship between Rainfall and Humidity3pm :
+    ## Correlation: 0.2890134 
+    ## Covariance: 20.58028 
+    ## 
+    ## # Measures of Relationship between Rainfall and Pressure9am :
+    ## Correlation: -0.3315814 
+    ## Covariance: -9.368695 
+    ## 
+    ## # Measures of Relationship between Rainfall and Pressure3pm :
+    ## Correlation: -0.2502176 
+    ## Covariance: -6.84057 
+    ## 
+    ## # Measures of Relationship between Rainfall and Cloud9am :
+    ## Correlation: 0.1800463 
+    ## Covariance: 2.249141 
+    ## 
+    ## # Measures of Relationship between Rainfall and Cloud3pm :
+    ## Correlation: 0.127792 
+    ## Covariance: 1.439847 
+    ## 
+    ## # Measures of Relationship between Rainfall and Temp9am :
+    ## Correlation: 0.07729936 
+    ## Covariance: 1.83932 
+    ## 
+    ## # Measures of Relationship between Rainfall and Temp3pm :
+    ## Correlation: -0.08749319 
+    ## Covariance: -2.455126 
+    ## 
+    ## # Measures of Relationship between Rainfall and RISK_MM :
+    ## Correlation: 0.08986031 
+    ## Covariance: 1.60467 
+    ## 
+    ## # Measures of Relationship between Evaporation and Sunshine :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between Evaporation and WindGustSpeed :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between Evaporation and WindSpeed9am :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between Evaporation and WindSpeed3pm :
+    ## Correlation: 0.0486013 
+    ## Covariance: 1.149067 
+    ## 
+    ## # Measures of Relationship between Evaporation and Humidity9am :
+    ## Correlation: -0.5195867 
+    ## Covariance: -18.22078 
+    ## 
+    ## # Measures of Relationship between Evaporation and Humidity3pm :
+    ## Correlation: -0.3917796 
+    ## Covariance: -17.62288 
+    ## 
+    ## # Measures of Relationship between Evaporation and Pressure9am :
+    ## Correlation: -0.381906 
+    ## Covariance: -6.81628 
+    ## 
+    ## # Measures of Relationship between Evaporation and Pressure3pm :
+    ## Correlation: -0.391093 
+    ## Covariance: -6.753926 
+    ## 
+    ## # Measures of Relationship between Evaporation and Cloud9am :
+    ## Correlation: -0.1060074 
+    ## Covariance: -0.8365087 
+    ## 
+    ## # Measures of Relationship between Evaporation and Cloud3pm :
+    ## Correlation: -0.1000445 
+    ## Covariance: -0.7120458 
+    ## 
+    ## # Measures of Relationship between Evaporation and Temp9am :
+    ## Correlation: 0.7076758 
+    ## Covariance: 10.63697 
+    ## 
+    ## # Measures of Relationship between Evaporation and Temp3pm :
+    ## Correlation: 0.6716325 
+    ## Covariance: 11.9051 
+    ## 
+    ## # Measures of Relationship between Evaporation and RISK_MM :
+    ## Correlation: 0.07676211 
+    ## Covariance: 0.8658977 
+    ## 
+    ## # Measures of Relationship between Sunshine and WindGustSpeed :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between Sunshine and WindSpeed9am :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between Sunshine and WindSpeed3pm :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between Sunshine and Humidity9am :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between Sunshine and Humidity3pm :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between Sunshine and Pressure9am :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between Sunshine and Pressure3pm :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between Sunshine and Cloud9am :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between Sunshine and Cloud3pm :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between Sunshine and Temp9am :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between Sunshine and Temp3pm :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between Sunshine and RISK_MM :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindGustSpeed and WindSpeed9am :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindGustSpeed and WindSpeed3pm :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindGustSpeed and Humidity9am :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindGustSpeed and Humidity3pm :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindGustSpeed and Pressure9am :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindGustSpeed and Pressure3pm :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindGustSpeed and Cloud9am :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindGustSpeed and Cloud3pm :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindGustSpeed and Temp9am :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindGustSpeed and Temp3pm :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindGustSpeed and RISK_MM :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindSpeed9am and WindSpeed3pm :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindSpeed9am and Humidity9am :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindSpeed9am and Humidity3pm :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindSpeed9am and Pressure9am :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindSpeed9am and Pressure3pm :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindSpeed9am and Cloud9am :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindSpeed9am and Cloud3pm :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindSpeed9am and Temp9am :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindSpeed9am and Temp3pm :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindSpeed9am and RISK_MM :
+    ## Correlation: NA 
+    ## Covariance: NA 
+    ## 
+    ## # Measures of Relationship between WindSpeed3pm and Humidity9am :
+    ## Correlation: -0.2660925 
+    ## Covariance: -30.96116 
+    ## 
+    ## # Measures of Relationship between WindSpeed3pm and Humidity3pm :
+    ## Correlation: -0.02636775 
+    ## Covariance: -3.935354 
+    ## 
+    ## # Measures of Relationship between WindSpeed3pm and Pressure9am :
+    ## Correlation: -0.3598001 
+    ## Covariance: -21.30727 
+    ## 
+    ## # Measures of Relationship between WindSpeed3pm and Pressure3pm :
+    ## Correlation: -0.3373253 
+    ## Covariance: -19.32862 
+    ## 
+    ## # Measures of Relationship between WindSpeed3pm and Cloud9am :
+    ## Correlation: -0.02642642 
+    ## Covariance: -0.6919081 
+    ## 
+    ## # Measures of Relationship between WindSpeed3pm and Cloud3pm :
+    ## Correlation: 0.00720724 
+    ## Covariance: 0.1701999 
+    ## 
+    ## # Measures of Relationship between WindSpeed3pm and Temp9am :
+    ## Correlation: -0.01776636 
+    ## Covariance: -0.8860484 
+    ## 
+    ## # Measures of Relationship between WindSpeed3pm and Temp3pm :
+    ## Correlation: -0.1875697 
+    ## Covariance: -11.03163 
+    ## 
+    ## # Measures of Relationship between WindSpeed3pm and RISK_MM :
+    ## Correlation: -0.009447055 
+    ## Covariance: -0.3535834 
+    ## 
+    ## # Measures of Relationship between Humidity9am and Humidity3pm :
+    ## Correlation: 0.5467184 
+    ## Covariance: 121.0281 
+    ## 
+    ## # Measures of Relationship between Humidity9am and Pressure9am :
+    ## Correlation: 0.135727 
+    ## Covariance: 11.92187 
+    ## 
+    ## # Measures of Relationship between Humidity9am and Pressure3pm :
+    ## Correlation: 0.1344205 
+    ## Covariance: 11.42429 
+    ## 
+    ## # Measures of Relationship between Humidity9am and Cloud9am :
+    ## Correlation: 0.3928416 
+    ## Covariance: 15.25595 
+    ## 
+    ## # Measures of Relationship between Humidity9am and Cloud3pm :
+    ## Correlation: 0.2719381 
+    ## Covariance: 9.525152 
+    ## 
+    ## # Measures of Relationship between Humidity9am and Temp9am :
+    ## Correlation: -0.4365506 
+    ## Covariance: -32.29277 
+    ## 
+    ## # Measures of Relationship between Humidity9am and Temp3pm :
+    ## Correlation: -0.3551186 
+    ## Covariance: -30.97863 
+    ## 
+    ## # Measures of Relationship between Humidity9am and RISK_MM :
+    ## Correlation: 0.165931 
+    ## Covariance: 9.211591 
+    ## 
+    ## # Measures of Relationship between Humidity3pm and Pressure9am :
+    ## Correlation: -0.08794614 
+    ## Covariance: -9.908803 
+    ## 
+    ## # Measures of Relationship between Humidity3pm and Pressure3pm :
+    ## Correlation: -0.01005189 
+    ## Covariance: -1.095816 
+    ## 
+    ## # Measures of Relationship between Humidity3pm and Cloud9am :
+    ## Correlation: 0.5516326 
+    ## Covariance: 27.47881 
+    ## 
+    ## # Measures of Relationship between Humidity3pm and Cloud3pm :
+    ## Correlation: 0.5101079 
+    ## Covariance: 22.91871 
+    ## 
+    ## # Measures of Relationship between Humidity3pm and Temp9am :
+    ## Correlation: -0.2556815 
+    ## Covariance: -24.2603 
+    ## 
+    ## # Measures of Relationship between Humidity3pm and Temp3pm :
+    ## Correlation: -0.5816761 
+    ## Covariance: -65.0873 
+    ## 
+    ## # Measures of Relationship between Humidity3pm and RISK_MM :
+    ## Correlation: 0.3587524 
+    ## Covariance: 25.5463 
+    ## 
+    ## # Measures of Relationship between Pressure9am and Pressure3pm :
+    ## Correlation: 0.967895 
+    ## Covariance: 41.86719 
+    ## 
+    ## # Measures of Relationship between Pressure9am and Cloud9am :
+    ## Correlation: -0.1575528 
+    ## Covariance: -3.11408 
+    ## 
+    ## # Measures of Relationship between Pressure9am and Cloud3pm :
+    ## Correlation: -0.1410004 
+    ## Covariance: -2.513647 
+    ## 
+    ## # Measures of Relationship between Pressure9am and Temp9am :
+    ## Correlation: -0.4604182 
+    ## Covariance: -17.33425 
+    ## 
+    ## # Measures of Relationship between Pressure9am and Temp3pm :
+    ## Correlation: -0.2536738 
+    ## Covariance: -11.2628 
+    ## 
+    ## # Measures of Relationship between Pressure9am and RISK_MM :
+    ## Correlation: -0.2905843 
+    ## Covariance: -8.210339 
+    ## 
+    ## # Measures of Relationship between Pressure3pm and Cloud9am :
+    ## Correlation: -0.1289441 
+    ## Covariance: -2.465985 
+    ## 
+    ## # Measures of Relationship between Pressure3pm and Cloud3pm :
+    ## Correlation: -0.1438372 
+    ## Covariance: -2.481078 
+    ## 
+    ## # Measures of Relationship between Pressure3pm and Temp9am :
+    ## Correlation: -0.4926363 
+    ## Covariance: -17.94587 
+    ## 
+    ## # Measures of Relationship between Pressure3pm and Temp3pm :
+    ## Correlation: -0.3454853 
+    ## Covariance: -14.84177 
+    ## 
+    ## # Measures of Relationship between Pressure3pm and RISK_MM :
+    ## Correlation: -0.3114209 
+    ## Covariance: -8.513775 
+    ## 
+    ## # Measures of Relationship between Cloud9am and Cloud3pm :
+    ## Correlation: 0.5252179 
+    ## Covariance: 4.139681 
+    ## 
+    ## # Measures of Relationship between Cloud9am and Temp9am :
+    ## Correlation: 0.02104135 
+    ## Covariance: 0.3502433 
+    ## 
+    ## # Measures of Relationship between Cloud9am and Temp3pm :
+    ## Correlation: -0.202344 
+    ## Covariance: -3.971959 
+    ## 
+    ## # Measures of Relationship between Cloud9am and RISK_MM :
+    ## Correlation: 0.2739145 
+    ## Covariance: 3.421744 
+    ## 
+    ## # Measures of Relationship between Cloud3pm and Temp9am :
+    ## Correlation: 0.04094519 
+    ## Covariance: 0.6147227 
+    ## 
+    ## # Measures of Relationship between Cloud3pm and Temp3pm :
+    ## Correlation: -0.1728142 
+    ## Covariance: -3.059665 
+    ## 
+    ## # Measures of Relationship between Cloud3pm and RISK_MM :
+    ## Correlation: 0.3264548 
+    ## Covariance: 3.678203 
+    ## 
+    ## # Measures of Relationship between Temp9am and Temp3pm :
+    ## Correlation: 0.8444058 
+    ## Covariance: 31.5729 
+    ## 
+    ## # Measures of Relationship between Temp9am and RISK_MM :
+    ## Correlation: 0.1648425 
+    ## Covariance: 3.922389 
+    ## 
+    ## # Measures of Relationship between Temp3pm and RISK_MM :
+    ## Correlation: -0.005825038 
+    ## Covariance: -0.163455
+
+## ANOVA
+
+``` r
+# ANOVA for a categorical variable (WindGustDir) and a numeric variable (MaxTemp)
+anova_result1 <- aov(MaxTemp ~ WindGustDir, data = WeatherData)
+
+# Display the ANOVA result for the first analysis
+cat("# ANOVA Result for MaxTemp and WindGustDir:\n")
+```
+
+    ## # ANOVA Result for MaxTemp and WindGustDir:
+
+``` r
+print(anova_result1)
+```
+
+    ## Call:
+    ##    aov(formula = MaxTemp ~ WindGustDir, data = WeatherData)
+    ## 
+    ## Terms:
+    ##                 WindGustDir Residuals
+    ## Sum of Squares     1560.608  7638.920
+    ## Deg. of Freedom           7       196
+    ## 
+    ## Residual standard error: 6.242923
+    ## Estimated effects may be unbalanced
+    ## 162 observations deleted due to missingness
+
+``` r
+# ANOVA for another categorical variable (RainTomorrow) and a numeric variable (MaxTemp)
+anova_result2 <- aov(MaxTemp ~ RainTomorrow, data = WeatherData)
+
+# Display the ANOVA result for the second analysis
+cat("\n# ANOVA Result for MaxTemp and RainTomorrow:\n")
+```
+
+    ## 
+    ## # ANOVA Result for MaxTemp and RainTomorrow:
+
+``` r
+print(anova_result2)
+```
+
+    ## Call:
+    ##    aov(formula = MaxTemp ~ RainTomorrow, data = WeatherData)
+    ## 
+    ## Terms:
+    ##                 RainTomorrow Residuals
+    ## Sum of Squares        39.595 16298.900
+    ## Deg. of Freedom            1       364
+    ## 
+    ## Residual standard error: 6.691577
+    ## Estimated effects may be unbalanced
+
+## Basic Visualizations

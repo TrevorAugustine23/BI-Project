@@ -440,4 +440,169 @@ bagging_model <- train(WeatherData[, features], WeatherData[[target_variable]],
 print(bagging_model)
 ```
 
+# Training the Model
+## Data splitting
+```{r}
+library(caret)
+
+#set-up target variables and features
+target_variable <- "RainTomorrow"
+features <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
+
+# Set the seed for reproducibility
+set.seed(123)
+
+# Create indices for data splitting
+split_indices <- createDataPartition(WeatherData[[target_variable]], p = 0.8, list = FALSE)
+
+# Create training and testing sets
+train_data <- WeatherData[split_indices, ]
+test_data <- WeatherData[-split_indices, ]
+
+# Print the dimensions of the training and testing sets
+cat("Training set dimensions:", dim(train_data), "\n")
+cat("Testing set dimensions:", dim(test_data), "\n")
+```
+
+## Bootstrapping
+```{r}
+library(boot)
+
+target_variable <- "RainTomorrow"
+features <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
+
+# Set the seed for reproducibility
+set.seed(123)
+
+# Create a function to calculate a statistic of interest
+calculate_statistic <- function(data, split_indices) {
+  sampled_data <- data[split_indices, ]
+  
+  
+  statistic <- mean(sampled_data$MaxTemp)
+  
+  return(statistic)
+}
+# Perform bootstrapping
+boot_results <- boot(data = WeatherData[, features],
+                     statistic = calculate_statistic,
+                     R = 1000)  # Number of bootstrap samples
+
+# Print the bootstrapped results
+print(boot_results)
+```
+
+## Models with resamples
+```{r}
+library(caret)
+
+target_variable <- "RainTomorrow"
+features <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
+
+# Set the seed for reproducibility
+set.seed(123)
+# Create a control object for cross-validation
+cv_control <- trainControl(method = "cv", number = 5)  # 5-fold cross-validation
+
+#replace WeatheData dataset with imputed dataset
+WeatherData <- imputed_data
+
+# Basic Cross-Validation with Random Forest
+rf_model <- train(WeatherData[, features], WeatherData[[target_variable]],
+                  method = "rf",  # Random Forest classifier
+                  trControl = cv_control)
+
+# Repeated Cross-Validation with Logistic Regression
+logreg_model <- train(WeatherData[, features], WeatherData[[target_variable]],
+                      method = "glm",  # Logistic Regression
+                      trControl = trainControl(method = "repeatedcv", number = 5, repeats = 3))
+
+# Leave-One-Out Cross-Validation with Support Vector Machine (SVM)
+svm_model <- train(WeatherData[, features], WeatherData[[target_variable]],
+                   method = "svmRadial",  # Radial kernel SVM
+                   trControl = trainControl(method = "LOOCV"))
+```
+
+## Model without resamples
+```{r}
+# Load necessary libraries
+library(caret)
+library(randomForest)
+library(glmnet)
+
+# Set the seed for reproducibility
+set.seed(123)
+
+
+# Assuming "RainTomorrow" is the target variable
+target_variable <- "RainTomorrow"
+
+# Check the data type of the target variable
+target_type <- class(WeatherData[[target_variable]])
+
+# Features
+features <- c("MinTemp", "MaxTemp", "Rainfall", "Evaporation", "Sunshine", "WindGustSpeed", "Humidity9am", "Humidity3pm")
+
+cl_model <- train(WeatherData[, features], WeatherData[[target_variable]],
+                 method = "rf",
+                 trControl = trainControl(method = "cv", number = 5))
+  
+```
+
+## Models perfomance metrics
+```{r}
+# Print model details
+print(cl_model)
+
+# Model performance comparison using resamples
+# Print model performance metrics
+print(rf_model)
+print(logreg_model)
+print(svm_model)
+  
+```
+
+# Save the model
+```{r}
+#Saving the model
+saveRDS(rf_model, "./models/saved_rf_model.rds")
+
+# Load the saved model
+loaded_rf_model <- readRDS("./models/saved_rf_model.rds")
+
+#Model predicts RainTomorrow
+new_data <- data.frame(
+  MinTemp = 15,
+  MaxTemp = 25,
+  Rainfall = 5,
+  Evaporation = 6,
+  Sunshine = 8,
+  WindGustDir = "N",
+  WindGustSpeed = 30,
+  WindDir9am = "NE",
+  WindDir3pm = "NW",
+  WindSpeed9am = 10,
+  WindSpeed3pm = 15,
+  Humidity9am = 60,
+  Humidity3pm = 40,
+  Pressure9am = 1010,
+  Pressure3pm = 1008,
+  Cloud9am = 5,
+  Cloud3pm = 3,
+  Temp9am = 18,
+  Temp3pm = 22,
+  RainToday = "No",
+  RISK_MM = 0,
+  RainTomorrow = "Yes"
+)
+
+
+# Use the loaded model to make predictions
+predictions_loaded_model <- predict(loaded_rf_model, newdata = new_data)
+
+
+# Print predictions
+print(predictions_loaded_model)
+```
+
 

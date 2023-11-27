@@ -29,6 +29,14 @@ Trevor Okinda
   Ensembles](#hyper-parameter-tuning-and-ensembles)
   - [Cross-validation](#cross-validation)
   - [Grid Search](#grid-search)
+  - [Bagging Ensemble](#bagging-ensemble)
+- [Training the Model](#training-the-model)
+  - [Data splitting](#data-splitting)
+  - [Bootstrapping](#bootstrapping)
+  - [Models with resamples](#models-with-resamples)
+  - [Model without resamples](#model-without-resamples)
+  - [Models perfomance metrics](#models-perfomance-metrics)
+- [Save the model](#save-the-model)
 
 # Student Details
 
@@ -1212,7 +1220,7 @@ install.packages("mice")
     ## package 'mice' successfully unpacked and MD5 sums checked
     ## 
     ## The downloaded binary packages are in
-    ##  C:\Users\Trevor\AppData\Local\Temp\RtmpEbnzXE\downloaded_packages
+    ##  C:\Users\Trevor\AppData\Local\Temp\RtmpOIYvWy\downloaded_packages
 
 ``` r
 library(mice)
@@ -1445,13 +1453,329 @@ print(rf_model)
     ## Resampling results across tuning parameters:
     ## 
     ##   mtry  Accuracy   Kappa    
-    ##   2     0.8689745  0.4426153
-    ##   3     0.8634580  0.4182866
-    ##   4     0.8552388  0.4020786
-    ##   5     0.8634580  0.4237933
-    ##   6     0.8579785  0.4205883
-    ##   7     0.8579785  0.4114599
-    ##   8     0.8497593  0.3904444
+    ##   2     0.8688264  0.4652800
+    ##   3     0.8715291  0.4880767
+    ##   4     0.8660496  0.4565847
+    ##   5     0.8578304  0.4375468
+    ##   6     0.8523510  0.4248613
+    ##   7     0.8578304  0.4369800
+    ##   8     0.8523510  0.4219588
+    ## 
+    ## Accuracy was used to select the optimal model using the largest value.
+    ## The final value used for the model was mtry = 3.
+
+## Bagging Ensemble
+
+``` r
+# Bagging Ensemble
+bagging_model <- train(WeatherData[, features], WeatherData[[target_variable]],
+                       method = "treebag",  # Bagging method
+                       trControl = trainControl(method = "cv", number = 5),
+                       metric = "Accuracy")
+
+
+# Print ensemble model details
+print(bagging_model)
+```
+
+    ## Bagged CART 
+    ## 
+    ## 366 samples
+    ##   8 predictor
+    ##   2 classes: 'No', 'Yes' 
+    ## 
+    ## No pre-processing
+    ## Resampling: Cross-Validated (5 fold) 
+    ## Summary of sample sizes: 293, 293, 293, 293, 292 
+    ## Resampling results:
+    ## 
+    ##   Accuracy   Kappa    
+    ##   0.8389485  0.3737097
+
+# Training the Model
+
+## Data splitting
+
+``` r
+library(caret)
+
+#set-up target variables and features
+target_variable <- "RainTomorrow"
+features <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
+
+# Set the seed for reproducibility
+set.seed(123)
+
+# Create indices for data splitting
+split_indices <- createDataPartition(WeatherData[[target_variable]], p = 0.8, list = FALSE)
+
+# Create training and testing sets
+train_data <- WeatherData[split_indices, ]
+test_data <- WeatherData[-split_indices, ]
+
+# Print the dimensions of the training and testing sets
+cat("Training set dimensions:", dim(train_data), "\n")
+```
+
+    ## Training set dimensions: 293 22
+
+``` r
+cat("Testing set dimensions:", dim(test_data), "\n")
+```
+
+    ## Testing set dimensions: 73 22
+
+## Bootstrapping
+
+``` r
+library(boot)
+```
+
+    ## 
+    ## Attaching package: 'boot'
+
+    ## The following object is masked from 'package:lattice':
+    ## 
+    ##     melanoma
+
+``` r
+target_variable <- "RainTomorrow"
+features <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
+
+# Set the seed for reproducibility
+set.seed(123)
+
+# Create a function to calculate a statistic of interest
+calculate_statistic <- function(data, split_indices) {
+  sampled_data <- data[split_indices, ]
+  
+  
+  statistic <- mean(sampled_data$MaxTemp)
+  
+  return(statistic)
+}
+# Perform bootstrapping
+boot_results <- boot(data = WeatherData[, features],
+                     statistic = calculate_statistic,
+                     R = 1000)  # Number of bootstrap samples
+
+# Print the bootstrapped results
+print(boot_results)
+```
+
+    ## 
+    ## ORDINARY NONPARAMETRIC BOOTSTRAP
+    ## 
+    ## 
+    ## Call:
+    ## boot(data = WeatherData[, features], statistic = calculate_statistic, 
+    ##     R = 1000)
+    ## 
+    ## 
+    ## Bootstrap Statistics :
+    ##     original    bias    std. error
+    ## t1* 20.55027 0.0145041   0.3429119
+
+## Models with resamples
+
+``` r
+library(caret)
+
+target_variable <- "RainTomorrow"
+features <- c("MaxTemp", "MinTemp", "Rainfall", "Sunshine")
+
+# Set the seed for reproducibility
+set.seed(123)
+# Create a control object for cross-validation
+cv_control <- trainControl(method = "cv", number = 5)  # 5-fold cross-validation
+
+#replace WeatheData dataset with imputed dataset
+WeatherData <- imputed_data
+
+# Basic Cross-Validation with Random Forest
+rf_model <- train(WeatherData[, features], WeatherData[[target_variable]],
+                  method = "rf",  # Random Forest classifier
+                  trControl = cv_control)
+
+# Repeated Cross-Validation with Logistic Regression
+logreg_model <- train(WeatherData[, features], WeatherData[[target_variable]],
+                      method = "glm",  # Logistic Regression
+                      trControl = trainControl(method = "repeatedcv", number = 5, repeats = 3))
+
+# Leave-One-Out Cross-Validation with Support Vector Machine (SVM)
+svm_model <- train(WeatherData[, features], WeatherData[[target_variable]],
+                   method = "svmRadial",  # Radial kernel SVM
+                   trControl = trainControl(method = "LOOCV"))
+```
+
+## Model without resamples
+
+``` r
+# Load necessary libraries
+library(caret)
+library(randomForest)
+library(glmnet)
+```
+
+    ## Loading required package: Matrix
+
+    ## Loaded glmnet 4.1-8
+
+``` r
+# Set the seed for reproducibility
+set.seed(123)
+
+
+# Assuming "RainTomorrow" is the target variable
+target_variable <- "RainTomorrow"
+
+# Check the data type of the target variable
+target_type <- class(WeatherData[[target_variable]])
+
+# Features
+features <- c("MinTemp", "MaxTemp", "Rainfall", "Evaporation", "Sunshine", "WindGustSpeed", "Humidity9am", "Humidity3pm")
+
+cl_model <- train(WeatherData[, features], WeatherData[[target_variable]],
+                 method = "rf",
+                 trControl = trainControl(method = "cv", number = 5))
+```
+
+## Models perfomance metrics
+
+``` r
+# Print model details
+print(cl_model)
+```
+
+    ## Random Forest 
+    ## 
+    ## 366 samples
+    ##   8 predictor
+    ##   2 classes: 'No', 'Yes' 
+    ## 
+    ## No pre-processing
+    ## Resampling: Cross-Validated (5 fold) 
+    ## Summary of sample sizes: 292, 293, 293, 293, 293 
+    ## Resampling results across tuning parameters:
+    ## 
+    ##   mtry  Accuracy   Kappa    
+    ##   2     0.8633469  0.4387610
+    ##   5     0.8579045  0.4365355
+    ##   8     0.8633839  0.4588577
+    ## 
+    ## Accuracy was used to select the optimal model using the largest value.
+    ## The final value used for the model was mtry = 8.
+
+``` r
+# Model performance comparison using resamples
+# Print model performance metrics
+print(rf_model)
+```
+
+    ## Random Forest 
+    ## 
+    ## 366 samples
+    ##   4 predictor
+    ##   2 classes: 'No', 'Yes' 
+    ## 
+    ## No pre-processing
+    ## Resampling: Cross-Validated (5 fold) 
+    ## Summary of sample sizes: 292, 293, 293, 293, 293 
+    ## Resampling results across tuning parameters:
+    ## 
+    ##   mtry  Accuracy   Kappa    
+    ##   2     0.8251388  0.2635145
+    ##   3     0.8251018  0.2807230
+    ##   4     0.8142540  0.2624639
     ## 
     ## Accuracy was used to select the optimal model using the largest value.
     ## The final value used for the model was mtry = 2.
+
+``` r
+print(logreg_model)
+```
+
+    ## Generalized Linear Model 
+    ## 
+    ## 366 samples
+    ##   4 predictor
+    ##   2 classes: 'No', 'Yes' 
+    ## 
+    ## No pre-processing
+    ## Resampling: Cross-Validated (5 fold, repeated 3 times) 
+    ## Summary of sample sizes: 293, 293, 292, 293, 293, 293, ... 
+    ## Resampling results:
+    ## 
+    ##   Accuracy   Kappa    
+    ##   0.8307047  0.2954807
+
+``` r
+print(svm_model)
+```
+
+    ## Support Vector Machines with Radial Basis Function Kernel 
+    ## 
+    ## 366 samples
+    ##   4 predictor
+    ##   2 classes: 'No', 'Yes' 
+    ## 
+    ## No pre-processing
+    ## Resampling: Leave-One-Out Cross-Validation 
+    ## Summary of sample sizes: 365, 365, 365, 365, 365, 365, ... 
+    ## Resampling results across tuning parameters:
+    ## 
+    ##   C     Accuracy   Kappa    
+    ##   0.25  0.8196721  0.0000000
+    ##   0.50  0.8360656  0.2129032
+    ##   1.00  0.8224044  0.1945968
+    ## 
+    ## Tuning parameter 'sigma' was held constant at a value of 0.5043526
+    ## Accuracy was used to select the optimal model using the largest value.
+    ## The final values used for the model were sigma = 0.5043526 and C = 0.5.
+
+# Save the model
+
+``` r
+#Saving the model
+saveRDS(rf_model, "./models/saved_rf_model.rds")
+
+# Load the saved model
+loaded_rf_model <- readRDS("./models/saved_rf_model.rds")
+
+#Model predicts RainTomorrow
+new_data <- data.frame(
+  MinTemp = 15,
+  MaxTemp = 25,
+  Rainfall = 5,
+  Evaporation = 6,
+  Sunshine = 8,
+  WindGustDir = "N",
+  WindGustSpeed = 30,
+  WindDir9am = "NE",
+  WindDir3pm = "NW",
+  WindSpeed9am = 10,
+  WindSpeed3pm = 15,
+  Humidity9am = 60,
+  Humidity3pm = 40,
+  Pressure9am = 1010,
+  Pressure3pm = 1008,
+  Cloud9am = 5,
+  Cloud3pm = 3,
+  Temp9am = 18,
+  Temp3pm = 22,
+  RainToday = "No",
+  RISK_MM = 0,
+  RainTomorrow = "Yes"
+)
+
+
+# Use the loaded model to make predictions
+predictions_loaded_model <- predict(loaded_rf_model, newdata = new_data)
+
+
+# Print predictions
+print(predictions_loaded_model)
+```
+
+    ## [1] No
+    ## Levels: No Yes

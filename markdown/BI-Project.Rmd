@@ -49,7 +49,7 @@ The dataset that was used can be downloaded here: *\<provide a link\>*
 *\<Cite the dataset here using APA\>\
 Refer to the APA 7th edition manual for rules on how to cite datasets: <https://apastyle.apa.org/style-grammar-guidelines/references/examples/data-set-references>*
 
-```{r Dataset Loader}
+```{r Load datasetr}
 library(readr)
 WeatherData <- read.csv("weather.csv", colClasses = c(
   MinTemp = "numeric",
@@ -76,6 +76,7 @@ WeatherData <- read.csv("weather.csv", colClasses = c(
   RainTomorrow = "factor"
 ))
 
+
 # Define levels for categorical columns
 wind_dir_levels <- c("N", "NE", "E", "SE", "S", "SW", "W", "NW")
 rain_levels <- c("No", "Yes")
@@ -90,5 +91,19 @@ WeatherData$RainTomorrow <- factor(WeatherData$RainTomorrow, levels = rain_level
 View(WeatherData)
 
 ```
+## Categorical columns analysis
+```{r}
+# List of categorical columns in the dataset
+categorical_columns <- c("WindGustDir", "WindDir9am", "WindDir3pm", "RainToday", "RainTomorrow")
 
-...to be continued
+# Loop through each categorical column and generate frequency and percentage tables
+for (col in categorical_columns) {
+  column_freq <- table(WeatherData[[col]])
+  
+  cat(paste("# Number of instances in (", col, "):\n"))
+  class_counts <- cbind(frequency = column_freq, percentage = prop.table(column_freq) * 100)
+  print(class_counts)
+  cat("\n")
+}
+```
+

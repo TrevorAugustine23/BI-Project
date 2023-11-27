@@ -1,7 +1,7 @@
 Business Intelligence Project
 ================
-<Specify your name here>
-<Specify the date when you submitted the lab>
+Trevor Okinda
+27th November 2023
 
 - [Student Details](#student-details)
 - [Setup Chunk](#setup-chunk)
@@ -13,12 +13,12 @@ Business Intelligence Project
 
 # Student Details
 
-|                                              |     |
-|----------------------------------------------|-----|
-| **Student ID Number**                        | …   |
-| **Student Name**                             | …   |
-| **BBIT 4.2 Group**                           | …   |
-| **BI Project Group Name/ID (if applicable)** | …   |
+|                                              |                                               |
+|----------------------------------------------|-----------------------------------------------|
+| **Student ID Number**                        | 134780                                        |
+| **Student Name**                             | Trevor Okinda                                 |
+| **BBIT 4.2 Group**                           | C                                             |
+| **BI Project Group Name/ID (if applicable)** | A Rainfall prediction model with Random Trees |
 
 # Setup Chunk
 

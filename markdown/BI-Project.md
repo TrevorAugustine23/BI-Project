@@ -1054,3 +1054,113 @@ print(anova_result2)
     ## Estimated effects may be unbalanced
 
 ## Basic Visualizations
+
+Univariate plots
+
+``` r
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  install.packages("ggplot2")
+}
+
+library(ggplot2)
+
+# Histogram for a numeric variable (Humidity9am)
+ggplot(WeatherData, aes(x = Humidity9am)) +
+  geom_histogram(binwidth = 5, fill = "coral", color = "black", alpha = 0.7) +
+  labs(title = "Histogram of Humidity9am", x = "Humidity9am", y = "Frequency")
+```
+
+![](BI-Project_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+``` r
+# Histogram  for another numeric variable (WindSpeed3pm)
+ggplot(WeatherData, aes(x = WindSpeed3pm)) +
+  geom_histogram(binwidth = 5, fill = "lightblue", color = "black", alpha = 0.7) +
+  labs(title = "Histogram of WindSpeed3pm", x = "WindSpeed3pm", y = "Frequency")
+```
+
+![](BI-Project_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
+
+``` r
+# Bar plot for a categorical variable (WindGustDir)
+ggplot(WeatherData, aes(x = WindGustDir)) +
+  geom_bar(fill = "lightgreen", color = "black", alpha = 0.7) +
+  labs(title = "Bar Plot of WindGustDir", x = "WindGustDir", y = "Count") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+```
+
+![](BI-Project_files/figure-gfm/unnamed-chunk-6-3.png)<!-- -->
+
+``` r
+# Bar plot for another categorical variable (RainToday)
+ggplot(WeatherData, aes(x = RainToday)) +
+  geom_bar(fill = "lightpink", color = "black", alpha = 0.7) +
+  labs(title = "Bar Plot of RainToday", x = "RainToday", y = "Count") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+![](BI-Project_files/figure-gfm/unnamed-chunk-6-4.png)<!-- -->
+MultiVariate Plots
+
+``` r
+#MultiVariate Plots
+# Scatter plot for two numeric variables (MaxTemp vs. Rainfall)
+ggplot(WeatherData, aes(x = Rainfall, y = MaxTemp)) +
+  geom_point(color = "blue", alpha = 0.7) +
+  labs(title = "Scatter Plot of MaxTemp vs. Rainfall", x = "Rainfall", y = "MaxTemp")
+```
+
+![](BI-Project_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+``` r
+# Box plot to compare a numeric variable across different levels of a categorical variable (WindGustDir vs. MaxTemp)
+ggplot(WeatherData, aes(x = WindGustDir, y = MaxTemp, fill = WindGustDir)) +
+  geom_boxplot() +
+  labs(title = "Box Plot of MaxTemp Across WindGustDir", x = "WindGustDir", y = "MaxTemp") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+```
+
+![](BI-Project_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
+
+``` r
+# Violin plot for the distribution of a numeric variable across different levels of a categorical variable (e.g., RainToday vs. Humidity9am)
+ggplot(WeatherData, aes(x = RainToday, y = Humidity9am, fill = RainToday)) +
+  geom_violin() +
+  labs(title = "Violin Plot of Humidity9am Across RainToday", x = "RainToday", y = "Humidity9am")
+```
+
+![](BI-Project_files/figure-gfm/unnamed-chunk-7-3.png)<!-- -->
+
+``` r
+# Bar plot to show the count of occurrences for two categorical variables (WindGustDir and RainToday)
+ggplot(WeatherData, aes(x = WindGustDir, fill = RainToday)) +
+  geom_bar(position = "dodge") +
+  labs(title = "Bar Plot of WindGustDir Counts by RainToday", x = "WindGustDir", y = "Count") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+![](BI-Project_files/figure-gfm/unnamed-chunk-7-4.png)<!-- -->
+
+``` r
+## Cross-tabulation
+# Create a cross-tabulation for RainToday and RainTomorrow
+cross_tab <- table(WeatherData$RainToday, WeatherData$RainTomorrow)
+
+# Display the cross-tabulation
+print(cross_tab)
+```
+
+    ##      
+    ##        No Yes
+    ##   No  255  45
+    ##   Yes  45  21
+
+``` r
+# Bar plot for WindGustDir
+ggplot(WeatherData, aes(x = WindGustDir, fill = WindGustDir)) +
+  geom_bar() +
+  labs(title = "Bar Plot of WindGustDir Counts", x = "WindGustDir", y = "Count") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for better visibility
+```
+
+![](BI-Project_files/figure-gfm/unnamed-chunk-7-5.png)<!-- -->

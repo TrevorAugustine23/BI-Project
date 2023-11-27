@@ -1,6 +1,6 @@
 Business Intelligence Project
 ================
-Trevor Okinda
+134780 Trevor Okinda
 27th November 2023
 
 - [Student Details](#student-details)
@@ -34,19 +34,20 @@ Trevor Okinda
   - [Data splitting](#data-splitting)
   - [Bootstrapping](#bootstrapping)
   - [Models with resamples](#models-with-resamples)
-  - [Model without resamples](#model-without-resamples)
+  - [Classification model with Random
+    forests](#classification-model-with-random-forests)
   - [Models perfomance metrics](#models-perfomance-metrics)
 - [Save the model](#save-the-model)
 - [Plumber API](#plumber-api)
 
 # Student Details
 
-|                                              |                                               |
-|----------------------------------------------|-----------------------------------------------|
-| **Student ID Number**                        | 134780                                        |
-| **Student Name**                             | Trevor Okinda                                 |
-| **BBIT 4.2 Group**                           | C                                             |
-| **BI Project Group Name/ID (if applicable)** | A Rainfall prediction model with Random Trees |
+|                                              |                             |
+|----------------------------------------------|-----------------------------|
+| **Student ID Number**                        | 134780                      |
+| **Student Name**                             | Trevor Okinda               |
+| **BBIT 4.2 Group**                           | C                           |
+| **BI Project Group Name/ID (if applicable)** | A Rainfall prediction model |
 
 # Setup Chunk
 
@@ -64,11 +65,15 @@ here <https://yihui.org/knitr/options/>.
 
 ### Source:
 
-The dataset that was used can be downloaded here: *\<provide a link\>*
+The dataset that was used can be downloaded here: *\<<a
+href="https://www.kaggle.com/datasets/zaraavagyan/weathercsv/discussion\"
+class="uri">https://www.kaggle.com/datasets/zaraavagyan/weathercsv/discussion\</a>\>*
 
 ### Reference:
 
-*\<Cite the dataset here using APA\>  
+*\<Avagyan, Z. (2017). Weather CSV \[Data set\]. Kaggle.
+<a href="https://www.kaggle.com/datasets/zaraavagyan/weathercsv\"
+class="uri">https://www.kaggle.com/datasets/zaraavagyan/weathercsv\</a>\>  
 Refer to the APA 7th edition manual for rules on how to cite datasets:
 <https://apastyle.apa.org/style-grammar-guidelines/references/examples/data-set-references>*
 
@@ -1221,7 +1226,7 @@ install.packages("mice")
     ## package 'mice' successfully unpacked and MD5 sums checked
     ## 
     ## The downloaded binary packages are in
-    ##  C:\Users\Trevor\AppData\Local\Temp\Rtmpisww7C\downloaded_packages
+    ##  C:\Users\Trevor\AppData\Local\Temp\Rtmp8QQXnO\downloaded_packages
 
 ``` r
 library(mice)
@@ -1450,20 +1455,20 @@ print(rf_model)
     ## 
     ## No pre-processing
     ## Resampling: Cross-Validated (5 fold) 
-    ## Summary of sample sizes: 293, 292, 293, 293, 293 
+    ## Summary of sample sizes: 293, 293, 293, 293, 292 
     ## Resampling results across tuning parameters:
     ## 
     ##   mtry  Accuracy   Kappa    
-    ##   2     0.8661237  0.4376316
-    ##   3     0.8743428  0.4950121
-    ##   4     0.8743058  0.4883156
-    ##   5     0.8716031  0.4872350
-    ##   6     0.8688634  0.4688574
-    ##   7     0.8661607  0.4783684
-    ##   8     0.8688634  0.4767903
+    ##   2     0.8799334  0.4972091
+    ##   3     0.8744909  0.4673580
+    ##   4     0.8744909  0.4799267
+    ##   5     0.8717512  0.4651331
+    ##   6     0.8662718  0.4458337
+    ##   7     0.8690115  0.4605476
+    ##   8     0.8580526  0.4230269
     ## 
     ## Accuracy was used to select the optimal model using the largest value.
-    ## The final value used for the model was mtry = 3.
+    ## The final value used for the model was mtry = 2.
 
 ## Bagging Ensemble
 
@@ -1487,11 +1492,11 @@ print(bagging_model)
     ## 
     ## No pre-processing
     ## Resampling: Cross-Validated (5 fold) 
-    ## Summary of sample sizes: 293, 293, 293, 292, 293 
+    ## Summary of sample sizes: 293, 293, 292, 293, 293 
     ## Resampling results:
     ## 
     ##   Accuracy   Kappa    
-    ##   0.8360607  0.3594514
+    ##   0.8471307  0.4286595
 
 # Training the Model
 
@@ -1609,7 +1614,7 @@ svm_model <- train(WeatherData[, features], WeatherData[[target_variable]],
                    trControl = trainControl(method = "LOOCV"))
 ```
 
-## Model without resamples
+## Classification model with Random forests
 
 ``` r
 # Load necessary libraries
@@ -1660,12 +1665,12 @@ print(cl_model)
     ## Resampling results across tuning parameters:
     ## 
     ##   mtry  Accuracy   Kappa    
-    ##   2     0.8661237  0.4387563
-    ##   5     0.8688264  0.4668434
-    ##   8     0.8633469  0.4493577
+    ##   2     0.8660866  0.4375138
+    ##   5     0.8606442  0.4478105
+    ##   8     0.8579045  0.4351371
     ## 
     ## Accuracy was used to select the optimal model using the largest value.
-    ## The final value used for the model was mtry = 5.
+    ## The final value used for the model was mtry = 2.
 
 ``` r
 # Model performance comparison using resamples
@@ -1685,9 +1690,9 @@ print(rf_model)
     ## Resampling results across tuning parameters:
     ## 
     ##   mtry  Accuracy   Kappa    
-    ##   2     0.8278045  0.2796066
-    ##   3     0.8278045  0.3001840
-    ##   4     0.8251388  0.3117140
+    ##   2     0.8223991  0.2575772
+    ##   3     0.8141799  0.2699686
+    ##   4     0.8142170  0.2700169
     ## 
     ## Accuracy was used to select the optimal model using the largest value.
     ## The final value used for the model was mtry = 2.
@@ -1704,11 +1709,11 @@ print(logreg_model)
     ## 
     ## No pre-processing
     ## Resampling: Cross-Validated (5 fold, repeated 3 times) 
-    ## Summary of sample sizes: 293, 293, 293, 293, 292, 292, ... 
+    ## Summary of sample sizes: 293, 292, 293, 293, 293, 293, ... 
     ## Resampling results:
     ## 
-    ##   Accuracy  Kappa    
-    ##   0.829668  0.2787558
+    ##   Accuracy   Kappa    
+    ##   0.8332963  0.3016874
 
 ``` r
 print(svm_model)
@@ -1727,12 +1732,12 @@ print(svm_model)
     ## 
     ##   C     Accuracy   Kappa    
     ##   0.25  0.8196721  0.0000000
-    ##   0.50  0.8306011  0.1727909
-    ##   1.00  0.8278689  0.2068111
+    ##   0.50  0.8360656  0.2129032
+    ##   1.00  0.8224044  0.1945968
     ## 
-    ## Tuning parameter 'sigma' was held constant at a value of 0.5881153
+    ## Tuning parameter 'sigma' was held constant at a value of 0.4685346
     ## Accuracy was used to select the optimal model using the largest value.
-    ## The final values used for the model were sigma = 0.5881153 and C = 0.5.
+    ## The final values used for the model were sigma = 0.4685346 and C = 0.5.
 
 # Save the model
 

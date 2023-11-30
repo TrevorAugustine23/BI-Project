@@ -20,7 +20,7 @@ editor_options:
 | **Student ID Number**                        | 134780 |
 | **Student Name**                             | Trevor Okinda |
 | **BBIT 4.2 Group**                           | C |
-| **Project Name** | A Rainfall prediction model |
+| **Project Name**                             | A Rainfall prediction model |
 
 # Setup Chunk
 
